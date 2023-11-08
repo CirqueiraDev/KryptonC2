@@ -13,7 +13,7 @@
 2. Clone the PYbot Github repository to your server via Git: `$ git clone https://github.com/CirqueiraDev/KryptonC2`.
 3. Change the host address and C&C port in the configuration section in [bot.py](src/Payload/bot.py) to your server address and C&C port.
 4. Start the CnC server by executing the command: `$ python cnc.py <cnc port>`.
-5. Add accounts in [logins.txt](/logins.txt) using the format: `username:password`.
+5. Add accounts in [logins.txt](/src/logins.txt) using the format: `username:password`.
 6. Connect to the server through [PuTTY](https://www.putty.org/) on a raw socket connection.
 
 *Compiling the malware and installing it on vulnerable devices won't be told as it's highly illegal to get remote access to devices without permission. Use of this project for illegal activities is at own risk! I'm not responsible for any of your taken actions!*
