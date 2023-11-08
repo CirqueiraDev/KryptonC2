@@ -27,12 +27,15 @@
 
 <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif"><br>
 
+<h1>Author 👑</h1>
+
+- **CirqueiraDev**
+
+- 💻 My discord: **cirqueira**
+- ✉ My Email: **Soon**
 <div>
-  <h1>Owner 👑</h1>
-  
+    
   [![Youtube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/@cirqueiradev)
   [![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/cirqueira.lol/)
   [![Tiktok](https://img.shields.io/badge/TikTok-000000?style=for-the-badge&logo=tiktok&logoColor=white)](https://tiktok.com/@cirqueiradev)
 </div>
-
-- 💻 My discord: **cirqueira**
