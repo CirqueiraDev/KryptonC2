@@ -4,6 +4,8 @@
     <img width="719" height="460" src="https://github.com/CirqueiraDev/KryptonC2/assets/118860604/5ceb037c-3c21-498c-9587-0cd376cd180b">
 </p>
 
+<img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif"><br>
+
  **KryptonC2** is a basic open source [denial of service](https://en.wikipedia.org/wiki/Denial-of-service_attack) [botnet](https://en.wikipedia.org/wiki/Botnet) system written in Python 3, consists of a connect and control server and a bot malware script.
 
 # Installation
