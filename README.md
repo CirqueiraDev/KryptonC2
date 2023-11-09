@@ -13,7 +13,7 @@
 2. Clone the KryptonC2 Github repository to your server via Git: `$ git clone https://github.com/CirqueiraDev/KryptonC2`.
 3. Change the host address and C&C port in the configuration section in [bot.py](src/Payload/bot.py) to your server address and C&C port.
 4. Install the requirements.txt
-5. Start the CnC server by executing the command: `$ python cnc.py <cnc port>`.
+5. Start the C2 server by executing the command: `$ python main.py`.
 6. Add accounts in [logins.txt](/src/logins.txt) using the format: `username:password`.
 7. Configure the port on the [config.json](/src/config.json) `{
 "cnc_host": "0.0.0.0",
