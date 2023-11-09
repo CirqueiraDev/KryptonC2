@@ -10,7 +10,7 @@
 
 # Installation
 1. Install Git and Python 3 on your server.
-2. Clone the PYbot Github repository to your server via Git: `$ git clone https://github.com/CirqueiraDev/KryptonC2`.
+2. Clone the KryptonC2 Github repository to your server via Git: `$ git clone https://github.com/CirqueiraDev/KryptonC2`.
 3. Change the host address and C&C port in the configuration section in [bot.py](src/Payload/bot.py) to your server address and C&C port.
 4. Install the requirements.txt
 5. Start the CnC server by executing the command: `$ python cnc.py <cnc port>`.
