@@ -131,7 +131,7 @@ botnetMethods = f"""
 {lightwhite}.HTTPCFB           {gray}HTTP Cloudflare bypass attack      
 {lightwhite}.HTTPGET           {gray}HTTP GET requests attack
 {lightwhite}.HTTPSTORM         {gray}HTTP STORM Requests
-{lightwhite}.IOSTRESSER        {gray}IO STRESSER STORM Attack
+{lightwhite}.IOSTRESSER        {gray}HTTP STORM Connections
 {gray}Games Methods: 
 {lightwhite}.VSE               {gray}Valve Source Engine query flood         
 {lightwhite}.ROBLOX            {gray}Roblox UDP Flood
