@@ -31,6 +31,8 @@
 # News
 1. New method (HTTP SPOOFER). 11/11/2023
 
+<br>
+
 <h1>Author 👑</h1>
 
 - **CirqueiraDev**
