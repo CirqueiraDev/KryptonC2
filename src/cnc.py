@@ -107,6 +107,7 @@ help = f"""
 {lightwhite}EXIT         {gray}Disconnects from the net
 """
 
+<<<<<<< HEAD
 Methods_L3 = f"""{gray}L3 Methods:
 {lightwhite}.ICMP              {gray}Flood ICMP Request
 {lightwhite}.POD               {gray}Ping Of Death OLD Method Of DDoS"""
@@ -114,6 +115,9 @@ Methods_L3 = f"""{gray}L3 Methods:
 Methods_L4 = f"""{gray}L4 Methods:
 {lightwhite}.NTP               {gray}NTP Reflection flood
 {lightwhite}.MEM               {gray}Memcached Flood 
+=======
+Methods_L4 = f"""{gray}L4 Methods:
+>>>>>>> c8a0fc504e65e8787c17a7240ce9b1a88b341abc
 {lightwhite}.UDP               {gray}UDP Flood  
 {lightwhite}.TCP               {gray}TCP Flood             
 {lightwhite}.TUP               {gray}TCP and UDP Flood
@@ -133,7 +137,10 @@ GameMethods = f"""{gray}Games Methods:
 {lightwhite}.ROBLOX            {gray}Roblox UDP Flood"""
 
 botnetMethods = f"""
+<<<<<<< HEAD
 {Methods_L3}
+=======
+>>>>>>> c8a0fc504e65e8787c17a7240ce9b1a88b341abc
 {Methods_L4}
 {Methods_L7}
 {GameMethods}
