@@ -29,8 +29,8 @@
 <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif"><br>
 
 # News
-1. New method `(HTTP SPOOFER) L7 Method`. 11/11/2023
-2. Updated Method `(HTTP IO) L7 Method`. 11/12/2023
+1. Updated Method `(HTTP IO) L7 Method`. 11/12/2023
+2. New method `(HTTP SPOOFER) L7 Method`. 11/11/2023
 3. New method `(NTP + Payload) L4 Method`. 11/13/2023
 4. New method `(MEM + Custom Payload) L4 Method`. 11/13/2023
 5. New method `(POD) L3 Method`. 11/14/2023
