@@ -30,7 +30,7 @@
 
 # News
 1. New method `(HTTP SPOOFER) L7 Method`. 11/11/2023
-2. New method `(NTP + Payload) L4 Method`. 11/13/2023
+2. New method `(NTP-AMP + Payload) L4 Method`. 11/13/2023
 3. New method `(MEM + Custom Payload) L4 Method`. 11/13/2023
 4. New method `(POD) L3 Method`. 11/14/2023
 5. New method `(ICMP) L3 Method`. 11/14/2023
