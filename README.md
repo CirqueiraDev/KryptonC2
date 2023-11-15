@@ -52,8 +52,6 @@
 <h1>Author 👑</h1>
 
 - **CirqueiraDev**
-
-- 💻 My discord: **cirqueira**
 - ✉ My Email: **Soon**
 <div>
     
