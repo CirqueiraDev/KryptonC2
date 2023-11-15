@@ -36,7 +36,7 @@
 5. New method  `(ICMP) L3 Method`. 11/14/2023
 6. Updated Method  `(HTTP IO) L7 Method`. 11/14/2023
 
-# Ideas to add
+# Ideas
 1. `Method:  OVH | Bypass OVH` *L7 method*
 2. `Method:  POST | POST Flood` *L7 method*
 3. `Method:  STRESS | Send HTTP Packet With High Byte` *L7 method*
@@ -45,6 +45,7 @@
 6. `Method:  DGB | DDoS Guard Bypass` *L7 method*
 7. `Method:  AVB | Arvan Cloud Bypass` *L7 method*
 8. `Method:  SYN | SYN Flood` *L4 method*
+9. **Send attacks with API's**
 
 <br>
 
