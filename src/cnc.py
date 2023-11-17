@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+#-*- coding: utf-8 -*-
 
 # Tools
 from src.Commands.Tools.url_to_ip import url_to_ip
