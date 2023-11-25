@@ -58,6 +58,8 @@
 <b>ETH</b>: <code>0xb685A72EdA6a016A43d75D269FdFa6315C80F8c9</code></br>
 <b>Paypal: Contact me *Discord:  cirquera*</b>
 
+---
+
 **👑Author:**
 #### Author / Help
 
