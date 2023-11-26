@@ -30,12 +30,12 @@
 
 # News
 1. New method  `(HTTP SPOOFER) L7 Method`. 11/11/2023
-2. New method  `(NTP Reflection + Payload) L4 Method`. 11/13/2023
-3. New method  `(Memcached + Custom Payload) L4 Method`. 11/13/2023
-4. New method  `(POD) L3 Method`. 11/14/2023
-5. New method  `(ICMP) L3 Method`. 11/14/2023
-6. Updated Method  `(HTTP IO) L7 Method`. 11/14/2023
-7. Added expiration date for accounts. `(AAAA-MM-DD)`
+2. New method  `(NTP Reflection + Payload) L4 Method`. 12/11/2023
+3. New method  `(Memcached + Custom Payload) L4 Method`. 12/11/2023
+4. New method  `(POD) L3 Method`. 13/11/2023
+5. New method  `(ICMP) L3 Method`. 13/11/2023
+6. Updated Method  `(HTTP IO) L7 Method`. 14/11/2023
+7. Added expiration date for accounts `(AAAA-MM-DD)`. 26/11/2023
 
 # Ideas
 1. `Method:  OVH | Bypass OVH` *L7 method*
