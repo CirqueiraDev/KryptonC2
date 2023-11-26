@@ -38,15 +38,15 @@
 7. Added expiration date for accounts `(AAAA-MM-DD)`. 26/11/2023
 
 # Ideas
-1. `Method:  OVH | Bypass OVH` *L7 method*
-2. `Method:  POST | POST Flood` *L7 method*
-3. `Method:  STRESS | Send HTTP Packet With High Byte` *L7 method*
-4. `Method:  OSTRESS | STRESS Without Proxy` *L7 method*
-5. `Method:  BYPASS | Bypass Normal AntiDDoS` *L7 method*
-6. `Method:  DGB | DDoS Guard Bypass` *L7 method*
-7. `Method:  AVB | Arvan Cloud Bypass` *L7 method*
-8. `Method:  SYN | SYN Flood` *L4 method*
-9. **Send attacks with API's**
+1. `Method:  OVH | Bypass OVH` **| Added? ❌**
+2. `Method:  POST | POST Flood` **| Added? ❌**
+3. `Method:  STRESS | Send HTTP Packet With High Byte` **| Added? ❌**
+4. `Method:  OSTRESS | STRESS Without Proxy` **| Added? ❌**
+5. `Method:  BYPASS | Bypass Normal AntiDDoS` **| Added? ❌**
+6. `Method:  DGB | DDoS Guard Bypass` **| Added? ❌**
+7. `Method:  AVB | Arvan Cloud Bypass` **| Added? ❌**
+8. `Method:  SYN | SYN Flood` **| Added? ❌**
+9. **Send attacks with API's** **| Added? ❌**
 
 <br>
 
