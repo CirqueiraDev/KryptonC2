@@ -35,6 +35,7 @@
 4. New method  `(POD) L3 Method`. 11/14/2023
 5. New method  `(ICMP) L3 Method`. 11/14/2023
 6. Updated Method  `(HTTP IO) L7 Method`. 11/14/2023
+7. Added expiration date for accounts. `(AAAA-MM-DD)`
 
 # Ideas
 1. `Method:  OVH | Bypass OVH` *L7 method*
