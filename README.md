@@ -65,7 +65,6 @@
 ---
 
 **👑Author:**
-#### Authors / Help
 
 - **CirqueiraDev**
 - ✉ My Email: **Soon**
