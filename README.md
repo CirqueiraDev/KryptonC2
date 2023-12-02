@@ -1,7 +1,7 @@
 <h1 align="center">Krypton Botnet</h1>
 
 <p align="center">
-    <img width="720" height=430" src="https://github.com/CirqueiraDev/KryptonC2/assets/118860604/7bab743a-1af4-4d48-9425-b2037808fc86">
+    <img src="https://github.com/CirqueiraDev/KryptonC2/assets/118860604/2cef4df9-9911-46b4-9467-a60088c0d3f5">
 </p>
 
 <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif"><br>
