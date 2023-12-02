@@ -104,7 +104,7 @@ help = f"""
 {lightwhite}BOTS         {gray}Shows available zombies
 {lightwhite}TOOLS        {gray}Shows list of tools    
 {lightwhite}CLEAR        {gray}Clears the screen          
-{lightwhite}EXIT         {gray}Disconnects from the net
+{lightwhite}EXIT         {gray}Disconnects from the C2
 """
 
 showMethods = f"""
