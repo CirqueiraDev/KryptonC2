@@ -26,6 +26,10 @@
 
 8. Connect to the server through [PuTTY](https://www.putty.org/) on a raw socket connection.
 
+https://github.com/CirqueiraDev/KryptonC2/assets/118860604/39c37798-fba0-4d95-948b-a013c3842ee2
+
+<br>
+
 *Compiling the malware and installing it on vulnerable devices won't be told as it's highly illegal to get remote access to devices without permission. Use of this project for illegal activities is at own risk! I'm not responsible for any of your taken actions!*
 
 <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif"><br>
