@@ -43,6 +43,7 @@ https://github.com/CirqueiraDev/KryptonC2/assets/118860604/39c37798-fba0-4d95-94
 6. Updated Method  `(HTTP IO) L7 Method`. 14/11/2023
 7. Added expiration date for accounts `(AAAA-MM-DD)`. 26/11/2023
 8. Update commands and visual. 02/12/2023
+9. New method `(SYN Flood) L4 method` and `(ACK Flood) Removed`. 04/12/2023
 
 # Ideas
 1. `Method:  OVH | Bypass OVH` **| Added? ❌**
