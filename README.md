@@ -68,7 +68,7 @@
 
 - **CirqueiraDev**
 - ✉ My Email: **Soon**
-- **Discord: cirquiera**
+- **Discord: cirqueira**
 
 <div>
     
