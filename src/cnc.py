@@ -40,7 +40,7 @@ def text2Gen():
     word = '''
 ╔════════════════════════════════════╗
 ║      type "help" for commands      ║
-║         Discord: cirueira          ║
+║         Discord: cirqueira         ║
 ╚════════════════════════════════════╝
 '''
 # ─────
