@@ -38,10 +38,10 @@ from colorama import Fore, init
 
 def text2Gen():
     word = '''
-╔════════════════════════════════════╗
-║      type "help" for commands      ║
-║         Discord: cirqueira         ║
-╚════════════════════════════════════╝
+
+     ( Type "help" for Commands )      
+        ( Discord: cirqueira )        
+
 '''
 # ─────
     start_color = (0, 0, 200)
@@ -111,6 +111,7 @@ showMethods = f"""
 {gray}List of Methods:
 {lightwhite}L3               {gray}Show all L3 Methods
 {lightwhite}L4               {gray}Show all L4 Methods  
+{lightwhite}AMP              {gray}Show all Amplification Methods  
 {lightwhite}HTTP             {gray}Show all L7 Methods  
 {lightwhite}GAMES            {gray}Show all Games Methods
 {lightwhite}BOTNET           {gray}Show all Methods  
@@ -129,7 +130,7 @@ Methods_AMP = f"""
 """
 
 Methods_L4 = f"""
-{gray}L4 and L4 AMP Methods:
+{gray}L4 Methods:
 {lightwhite}.NTP               {gray}NTP Reflection flood
 {lightwhite}.MEM               {gray}Memcached Flood 
 {lightwhite}.UDP               {gray}UDP Flood  
@@ -266,6 +267,7 @@ def captcha(send, client, grey):
 
 # Client handler
 def handle_client(client, address):
+    send(client, "\33]0;Krypton C2 | Login\a")
     send(client, f'\x1bKrypton | Login: Awaiting Response...\a', False)
     send(client, ansi_clear, False)
     send(client, f'{color("LIGHTBLSYN_EX")}Connecting...')
@@ -392,7 +394,7 @@ def command_line(client, username):
     for x in banner.split('\n'):
         send(client, x)
 
-    prompt = f'{color("LIGHTBLSYN_EX")}[{color("WHITE")}Krypton{color("LIGHTBLSYN_EX")}@{color("WHITE")}{username}{color("LIGHTBLSYN_EX")}]:~# {color("LIGHTBLSYN_EX")}'
+    prompt = f'{color("LIGHTBLSYN_EX")}({color("WHITE")}Krypton{color("LIGHTBLSYN_EX")}@{color("CYAN")}{username}{color("LIGHTBLSYN_EX")}) > {color("LIGHTBLSYN_EX")}'
     send(client, prompt, False)
 
     while 1:
@@ -529,14 +531,12 @@ def command_line(client, username):
     client.close()
 
 screenedSuccessfully = """
-                ╔════════════════════════════════════╗
-                ║                                    ║
-                ║        Successfully Screened       ║
-                ║     ───────────────────────────    ║
-                ║            ╔══════════╗            ║
-                ╚════════════╣   LOGS   ╠════════════╝
-                             ╚══════════╝
-        
+                              
+ [ Successfully Screened ]
+        Krypton C2
+───────────────────────────    
+         ( Logs )
+
 """
 
 
