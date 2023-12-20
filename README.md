@@ -46,15 +46,15 @@ https://github.com/CirqueiraDev/KryptonC2/assets/118860604/39c37798-fba0-4d95-94
 9. New method `(SYN Flood) L4 method` and `(ACK Flood) Removed`. 04/12/2023
 
 # Ideas
-1. `Method:  OVH | Bypass OVH` **| **
-2. `Method:  POST | POST Flood` **| **
-3. `Method:  STRESS | Send HTTP Packet With High Byte` **|**
-4. `Method:  OSTRESS | STRESS Without Proxy` **|**
-5. `Method:  BYPASS | Bypass Normal AntiDDoS` **|**
-6. `Method:  DGB | DDoS Guard Bypass` **| **
-7. `Method:  AVB | Arvan Cloud Bypass` **| **
-8. `Method:  SYN | SYN Flood` **| **
-9. **Send attacks with API's** **|**
+1. `Method:  OVH | Bypass OVH` 
+2. `Method:  POST | POST Flood` 
+3. `Method:  STRESS | Send HTTP Packet With High Byte`
+4. `Method:  OSTRESS | STRESS Without Proxy`
+5. `Method:  BYPASS | Bypass Normal AntiDDoS` 
+6. `Method:  DGB | DDoS Guard Bypass` 
+7. `Method:  AVB | Arvan Cloud Bypass`
+8. `Method:  SYN | SYN Flood` 
+9. **Send attacks with API's** 
 10. **Optimize malicious code**
 
 <br>
