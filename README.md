@@ -53,9 +53,8 @@ https://github.com/CirqueiraDev/KryptonC2/assets/118860604/39c37798-fba0-4d95-94
 5. `Method:  BYPASS | Bypass Normal AntiDDoS` 
 6. `Method:  DGB | DDoS Guard Bypass` 
 7. `Method:  AVB | Arvan Cloud Bypass`
-8. `Method:  SYN | SYN Flood` 
-9. **Send attacks with API's** 
-10. **Optimize malicious code**
+8. **Send attacks with API's** 
+9. **Optimize malicious code**
 
 <br>
 
