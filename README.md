@@ -72,7 +72,6 @@ https://github.com/CirqueiraDev/KryptonC2/assets/118860604/39c37798-fba0-4d95-94
 **👑Author:**
 
 - **CirqueiraDev**
-- ✉ My Email: **Soon**
 - **Discord: cirqueira**
 
 <div>
