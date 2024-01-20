@@ -32,12 +32,12 @@ https://github.com/CirqueiraDev/KryptonC2/assets/118860604/39c37798-fba0-4d95-94
 
 📍 *Compiling the malware and installing it on vulnerable devices won't be told as it's highly illegal to get remote access to devices without permission. Use of this project for illegal activities is at own risk! I'm not responsible for any of your taken actions!*
 
+<img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif"><br>
+
 <br>
 
 # Owner Code
-*Credits:* https://github.com/NixWasHere/NixC2
-
----
+**Credits:** https://github.com/NixWasHere/NixC2
 
 # News
 1. New method  `(HTTP SPOOFER) L7 Method`. 11/11/2023
