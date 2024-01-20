@@ -74,6 +74,8 @@ https://github.com/CirqueiraDev/KryptonC2/assets/118860604/39c37798-fba0-4d95-94
 - **CirqueiraDev**
 - **Discord: cirqueira**
 
+Credits: https://github.com/NixWasHere/NixC2
+
 <div>
     
   [![Youtube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/@cirqueiradev)
