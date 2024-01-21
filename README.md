@@ -36,11 +36,6 @@ https://github.com/CirqueiraDev/KryptonC2/assets/118860604/39c37798-fba0-4d95-94
 
 <br>
 
-# Owner Code
-**Credits:** https://github.com/NixWasHere/NixC2
-
-<br>
-
 # News
 1. New method  `(HTTP SPOOFER) L7 Method`. 11/11/2023
 2. New method  `(NTP Reflection + Payload) L4 Method`. 12/11/2023
@@ -62,6 +57,11 @@ https://github.com/CirqueiraDev/KryptonC2/assets/118860604/39c37798-fba0-4d95-94
 7. `Method:  AVB | Arvan Cloud Bypass`
 8. **Send attacks with API's** 
 9. **Optimize malicious code**
+
+<br>
+
+# Owner Code
+**Credits:** https://github.com/NixWasHere/NixC2
 
 <br>
 
