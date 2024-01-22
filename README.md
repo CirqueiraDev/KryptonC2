@@ -62,7 +62,7 @@ https://github.com/CirqueiraDev/KryptonC2/assets/118860604/39c37798-fba0-4d95-94
 <br>
 
 # Owner Code
-**Credits:** https://github.com/NixWasHere/NixC2
+📌**Credits:** https://github.com/NixWasHere/NixC2
 
 <br>
 
