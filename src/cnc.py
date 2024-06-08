@@ -171,7 +171,7 @@ Methods_L7 = f"""
 {gray}L7 Methods:
 {lightwhite}.HTTPIO            {gray}HTTP IO Stresser
 {lightwhite}.HTTPCFB           {gray}HTTP Cloudflare bypass     
-{lightwhite}.HTTPGET           {gray}HTTP GET requests attSYN
+{lightwhite}.HTTPGET           {gray}HTTP GET requests 
 {lightwhite}.HTTPSPOOF         {gray}HTTP GET Spoofing
 {lightwhite}.HTTPSTORM         {gray}HTTP STORM Requests
 """
