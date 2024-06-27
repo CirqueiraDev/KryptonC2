@@ -84,7 +84,6 @@ https://github.com/CirqueiraDev/KryptonC2/assets/118860604/39c37798-fba0-4d95-94
 <div>
     
   [![Youtube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/@cirqueiradev)
-  [![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/cirqueira.lol/)
+  [![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/cirqueirakkjk/)
   [![Tiktok](https://img.shields.io/badge/TikTok-000000?style=for-the-badge&logo=tiktok&logoColor=white)](https://tiktok.com/@cirqueiradev)
-  <a href="https://t.me/CirqueiraDev"><img src="https://img.shields.io/badge/Telegram-0078FF?style=for-the-badge&logo=telegram&logoColor=white" alt="Tiktok"></a>
 </div>
