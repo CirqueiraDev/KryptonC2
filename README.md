@@ -73,7 +73,6 @@ https://github.com/CirqueiraDev/KryptonC2/assets/118860604/39c37798-fba0-4d95-94
 
 <b>BTC</b>: <code>bc1qynerkzreqgeuhfywfelhz45df2a73f38cmctzu</code></br>
 <b>ETH</b>: <code>0xb685A72EdA6a016A43d75D269FdFa6315C80F8c9</code></br>
-<b>Paypal: Contact me on Discord or Telegram</b>
 
 ---
 
