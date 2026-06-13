@@ -70,5 +70,5 @@ https://github.com/CirqueiraDev/KryptonC2/assets/118860604/39c37798-fba0-4d95-94
 
 <div>
     
-  [![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/cirqueirax/)
+  [![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/cirqueiradev/)
 </div>
